@@ -1,0 +1,44 @@
+{
+    "googleFonts": [
+        "Jaro",
+        "Jersey+10"
+    ],
+    "pages": [
+        {
+            "background": "#004",
+            "lines": [
+                {
+                    "text": "Hello, world!",
+                    "fontSize": "48px",
+                    "color": "orangered",
+                    "textAlign": "center",
+                    "fontStyle": "bold",
+                    "fontFamily": "Jaro"
+                },
+                {
+                    "text": "This is a test of the page system.",
+                    "fontSize": "18px",
+                    "color": "white"
+                }
+            ]
+        },
+        {
+            "background": "#400",
+            "lines": [
+                {
+                    "text": "This is the second page.",
+                    "fontSize": "72px",
+                    "color": "white",
+                    "textAlign": "center",
+                    "fontStyle": "bold",
+                    "fontFamily": "Jersey 10"
+                },
+                {
+                    "text": "It's a little different from the first one.",
+                    "fontSize": "18px",
+                    "color": "white"
+                }
+            ]
+        }
+    ]
+}

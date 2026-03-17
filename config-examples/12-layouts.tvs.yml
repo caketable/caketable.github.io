@@ -1,0 +1,85 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+
+baseDirectory: ../ # <-- to make this example work in the examples browser it's necessary to set the base directory; you won't need to use this in your own projects.
+
+defaultChannel: 138
+
+channels:
+
+# - number: 130
+#   name: Horizontal Split
+#   h-split:
+#     a:
+#       image: placeholders/example-ad.gif
+#     b:
+#       generator: color-bars
+
+# - number: 131
+#   name: Vertical Split
+#   v-split:
+#     a:
+#       image: placeholders/example-program.gif
+#     b:
+#       generator: test-pattern
+
+- number: 134
+  name: This makes no sense but is possible
+  backgroundAudio: placeholders/bgm-3.mp3
+  loop:
+  - v-split:
+      a:
+        loop:
+        - image: placeholders/example-ad.gif
+          duration: 5
+        - h-split:
+            a:
+              generator:
+                type: color-bars
+                volume: false
+            b:
+              generator:
+                type: test-pattern
+                volume: false
+          duration: 5
+      b:
+        h-split:
+          a:
+            loop:
+            - image: placeholders/example-program.gif
+              duration: 5
+            - video:
+                interruptsBackgroundAudio: true
+                src: http://pce.gcpw.us:8081/hls/0/stream.m3u8
+              duration: 5
+          b:
+            generator:
+              type: color-bars
+              volume: false
+    duration: 10
+  - video:
+      interruptsBackgroundAudio: true
+      src: http://pce.gcpw.us:8081/hls/0/stream.m3u8
+    duration: 10
+  - image: placeholders/example-program.gif
+    duration: 10
+
+- number: 138
+  name: Testing
+  backgroundAudio: placeholders/bgm-3.mp3
+  loop:
+    - h-split:
+        a:
+          image: placeholders/example-ad.gif
+        b:
+          video:
+            src: http://pce.gcpw.us:8081/hls/0/stream.m3u8
+            interruptsBackgroundAudio: true
+      duration: 5
+    - video:
+        src: http://pce.gcpw.us:8081/hls/0/stream.m3u8
+        interruptsBackgroundAudio: true
+      duration: 5
+    - image: placeholders/example-ad.gif
+      duration: 5
+- number: 139
+  name: Off-air

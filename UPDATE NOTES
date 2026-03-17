@@ -1,0 +1,1244 @@
+# Update Notes - 5.9.2 (2026-03-16)
+
+## 🔧 Bug Fixes
+
+* Fixed [#115](https://github.com/zshall/program-guide/issues/115) which was a problem I traced back to a Svelte framework issue. Svelte 5.53.7 exhibited this issue but Svelte 5.53.12 has fixed it. The issue manifested itself in TVS as a problem when changing channels too quickly; we would unload a channel rapidly while it's still loading and this would cause multiple channels to be loaded at the same time despite using a `{#key}` block to prevent this. The zombie channels would never unload and would stick around until we refreshed the page.
+
+* Added a 200ms throttle on channel change operations to help prevent any future issues with changing channels too fast. If you hold down the channel up / down button we no longer change channels as fast as possible; we'll change channels about 5 channels per second instead. If you mash channel up and down buttons rapidly we'll ignore any button presses shorter than 200ms apart.
+
+* Fixed an issue with the YouTube playlist engine where if you use it inside a `h-split` or `v-split` layout the player would take up 100% of the **screen** rather than 100% of its **container** meaning that we were losing half the image. YouTube playlists resize to fit their container properly now.
+
+# Update Notes - 5.9.1 (2026-03-15)
+
+## 🔧 Bug Fixes
+
+* Fixed [#113](https://github.com/zshall/program-guide/issues/113); the `<marquee>` tag is broken in Chrome 146, so I switched to a custom implementation. This runs at 60 FPS and behaves similarly to the real marquee tag. Currently it is only available in the `1989` program guide theme, but it'll be used in upcoming engines as well.
+
+# Update Notes - 5.9.0 (2026-03-09)
+
+## ✨ New Features
+
+* Added new `sat1992` OSD theme based on C-Band satellite TV from the early 90's. This theme brings with it some interesting customization options; true to the way the real receivers work, we simulate a satellite dish on a motorized base. You can optionally define a list of known satellites with positions based on motor pulses (these values can be any arbitrary number). You can then define `themeOptions` in individual channels to specify the satellite that the picture would be received from. When you go to a channel that uses a different satellite than the one that you were on previously, the simulated motor will display progress saying it's turning to the position that you specified.
+
+```yml
+osd:
+  theme: sat1992 # 1990's analog C-band satellite receiver theme
+  themeOptions:
+    # showChannelInterference: false # by default, we display overlays of 
+    satellite: C1 # the default satellite for all channels to be on. If unset, only channels with a satellite option set will display one.
+    satellites: # you can define a list of different satellites; they'll be a letter and number combination followed by a 4-digit number representing the location in the sky
+      C1: 3600 # these are all arbitrary numbers
+      C3: 4100
+      C4: 4300
+      C5: 4550
+      G1: 4550
+      G2: 4700
+      G3: 5100
+      G4: 6200
+      T3: 6900
+
+channels:
+- number: 1
+  name: Test Channel
+  color: blue
+  themeOptions: # optional section for theme-specific metadata
+    satellite: C3 # you can designate a channel as being on a particular satellite; choose from the list you defined in the OSD themes
+
+- number: 2
+  name: Test Channel 2
+  color: red
+  themeOptions:
+    satellite: G2
+
+- number: 3
+  name: Test Channel 3
+  color: green # if a channel doesn't specify a satellite, it defaults to the one specified in the OSD options, or no satellite if one isn't specified there either
+```
+
+* Added a new `abstract-background` engine, which can currently apply two different visual effects to an image of your choice; `wave1` and `wave2`.
+
+```yml
+- number: 143
+  name: Abstract background 1
+  abstract-background:
+    type: wave1
+
+- number: 144
+  name: Abstract background 2
+  abstract-background:
+    type: wave2
+
+- number: 145
+  name: Abstract background with custom image
+  abstract-background:
+    src: placeholders/example-program.webp
+    type: wave2
+    width: 400
+    height: 300
+```
+
+# Update Notes - 5.8.0 (2026-02-09)
+
+## ✨ New Features
+
+* Added new `daily-schedule` engine that allows you to specify content to show at different times of the day. Acts as a timed loop (using your browser's time zone).
+* Added `pixelated` option to the `image` engine that allows you to use pixelated scaling when the image is scaled up, which can be desirable for low-resolution images or pixel art.
+
+~~~yml
+- number: 240
+  name: Daily Schedule
+  abbr: SCHED
+  daily-schedule: # The daily schedule engine allows you to define content based on a 24-hour schedule. You can go overnight, but you can't overlap content. The schedule will repeat each day.
+    noSignalContent: # Optional. You can specify content to show when there's nothing else scheduled.
+      color: black
+    
+    content:
+    - startTime: "20:00" # Time to start this item, in 24 hour format. Required.
+      endTime: "05:00" # Time to end this item, in 24 hour format. Required.
+      image: # The content to show. Required.
+        src: placeholders/schedule-night.png
+        pixelated: true
+
+    - startTime: "05:00"
+      endTime: "11:00"
+      image:
+        src: placeholders/schedule-morning.png
+        pixelated: true
+    
+    - startTime: "11:00"
+      endTime: "20:00"
+      image:
+        src: placeholders/schedule-day.png
+        pixelated: true
+~~~
+
+## 🔧 Bug Fixes
+
+* Fixed an issue where content inside loops couldn't access channel information.
+
+# Update Notes - 5.7.3 (2026-01-17)
+
+## 🔧 Bug Fixes
+
+* Fixed an issue with Docker deployments where the example config file wasn't included in the image.
+
+# Update Notes - 5.7.2 (2026-01-15)
+
+## 🔧 Bug Fixes
+
+* Fixed a longstanding issue where the Web Remote QR code doesn't display the Peer ID correctly.
+* Fixed issue where the Web Remote QR code would display on localhost or 127.0.0.1, which can't be reached from other devices. The pairing code is still shown in these cases.
+* Changed Web Remote pairing code to be alphanumeric to further prevent collisions.
+
+# Update Notes - 5.7.1 (2026-01-10)
+
+## 🔧 Bug Fixes
+
+* Added a 10-second cooldown when `backgroundAudio` fails to load before retrying to prevent potentially thousands of requests in a short period of time if the audio source isn't available.
+
+## ❗ Deprecation Notice
+
+* Television Simulator 6.0.0 will replace the external listing feature of the program guide with a new system designed to work with the currently-in-development Television Simulator Studio companion server. The `guide.externalListings` option will be removed in 6.0.0 and in its place will be a new API to sync guide data from an external source. More details will be provided closer to release. The `title` and `description` options for channels will also be deprecated in favor of a new `info` option that will include more advanced functionality; more information will be provided later.
+
+## ⚙️ Example Config File Changes
+
+* Added TVS Update Channel (feed reader of the latest changelog updates) on channel 4.
+* Changed the "no content" channel to channel 8.
+
+# Update Notes - 5.7.0 (2025-12-28)
+
+## ✨ New Features
+
+* Added new TV state messages to the IFrame API: `TVS.Volume`, `TVS.Muting` and `TVS.Power`.
+  These messages inform IFrame applications about changes in volume, mute and power states, respectively. See the [TVS IFrame API documentation](https://docs.tvs.gcpw.art/developer/iframe-api/) for more details on how to use these new messages.
+
+* Added `background` option to the PiP layout that allows you to set a background color behind the PiP content.
+
+* Added `aspectRatioBehavior` option to the Video engine that allows you to control how videos are displayed in their container. Options are `contain`, `cover` and `stretch`. Default is `contain`.
+
+~~~yml
+- number: 2
+  name: You're Watching Television Simulator
+  abbr: TVS
+  video:
+    src: placeholders/tvs-loop.mp4
+    aspectRatioBehavior: cover # Optional. The aspect ratio behavior of the video. Values are contain, cover, or stretch. Defaults to contain.
+~~~
+
+---
+
+# Update Notes - 5.6.0 (2025-12-20)
+
+## ✨ New Features
+
+* Added the beginnings of a new IFrame API that allows web applications embedded in an IFrame engine to access options defined in the TVS config file. See the [TVS IFrame API documentation](https://docs.tvs.gcpw.art/developer/iframe-api/) for more details on how to use this feature.
+
+## ⚙️ Other Changes
+
+* Added new placeholder video loop: `placeholders/tvs-loop.mp4`, a seamless 4:3 loop of the TVS logo.
+* Updated the example config file to include the placeholder loop on channel 2. Channel 3 is the new `WELCOME` channel.
+
+# Update Notes - 5.5.0 (2025-12-14)
+
+## ✨ New Features
+
+* Added a new `limit` option to the loop engine that allows for more advanced content selection capabilities.
+
+Consider this example:
+
+~~~yml
+refs:
+  loop-1:
+    loop:
+      shuffle: random
+      limit: 1
+      content:
+      - image: placeholders/sequence/1.jpg
+        duration: 3
+      - image: placeholders/sequence/2.jpg
+        duration: 3
+  
+  loop-2:
+    loop:
+      shuffle: random
+      limit: 2
+      content:
+      - image: placeholders/sequence/3.jpg
+        duration: 3
+      - image: placeholders/sequence/4.jpg
+        duration: 3
+      - image: placeholders/sequence/5.jpg
+        duration: 3
+
+channels:
+- number: 185
+  loop:
+  - ref: loop-1
+  - ref: loop-2
+~~~
+
+We'll loop from `loop-1` to `loop-2` then back again, but each time we start up one of these, we'll choose only
+one item from `loop-1` and only two items from `loop-2`. The nested loops and shuffling makes it work!
+
+## 🔧 Bug Fixes
+
+* Fixed an issue where parents of nested loops (loops within loops) would advance to the next content after the default duration (30 seconds) instead of waiting for an inner loop to finish.
+
+---
+
+# Update Notes - 5.4.1 (2025-11-23)
+
+## 🔧 Bug Fixes
+
+* Picture static (noise) loads more efficiently by caching noise frames and reusing them, reducing CPU usage and improving animation smoothness.
+  We render at 60fps instead of as fast as possible.
+
+* Fixed [#103](https://github.com/zshall/program-guide/issues/103) where `noise: 0` wasn't actually disabling noise.
+  For global noise, `noise: 0` will set the default noise to 0 per channel but can still be overridden per-channel,
+  while `noise: false` will globally disable noise no matter what.
+
+* Basic Text engine now supports custom aspect ratios properly.
+
+* Video engine better supports custom aspect ratios as we removed a hard-coded reference to 4:3 aspect ratio.
+
+# Update Notes - 10/25/2025 (5.4.0)
+
+## ✨ New Features
+
+* Added Picture-In-Picture (PiP) layout. You can use it to overlay one piece of content on top of another in a smaller window. You can specify the position and size of the PiP window, including a border color and thickness.
+
+~~~yml
+- number: 132
+  name: PIP Layout
+  pip:
+    a:
+      image: placeholders/example-program.webp
+    b:
+      generator: test-pattern
+~~~
+
+~~~yml
+- number: 134
+  name: Lots of Layouts
+  pip:
+    borderColor: yellowgreen
+    borderSize: 8
+    bottom: 40
+    right: 20
+    a:
+      h-split:
+        gapSize: 8
+        gapColor: white
+        splitPercentage: 0.75
+        a:
+          v-split:
+            splitPercentage: 0.75
+            gapSize: 8
+            gapColor: white
+            a:
+              image: placeholders/example-ad.webp
+            b:
+              color: red
+        b:
+          color: yellow
+    b:
+      generator:
+        type: test-pattern
+        volume: false
+~~~
+
+* Added configurable split percentages (0.0 -> 1.0) for HSplit and VSplit layouts.
+
+
+## 🔧 Bug Fixes
+
+* Custom aspect ratios are supported for Mix layout.
+* Fixed a bug in calculating layer sizes regarding quoted numbers.
+* Abstract backgrounds cover their available container size.
+* Updated `web.config` for IIS deployments to set correct MIME types for WebP files.
+
+## ⚙️ Other Changes
+
+* Updated demo config file with examples of `animateChannelChange` and `changeChannelNoise`.
+
+# Update Notes - 9/18/2025 (5.3.1)
+
+## 🔧 Bug Fixes
+
+* Allowed `iframe` to be used with custom aspect ratios. They'll now fill the screen properly instead of being forced to 4:3.
+
+---
+
+# Update Notes - 9/14/2025 (5.3.0)
+
+## ✨ New Features
+
+* Added startup video feature. You can now specify content to show when the TV is powered on before the regular channels are shown. This can be a video, image, or any other content type. You can specify a duration for how long to show it or have it display until you interact with the TV (by changing the channel). You can have it display whenever the page loads or whenever the power state is changed (pressing `P` on the keyboard).
+
+~~~yml
+startup:
+  content:
+    video: placeholders/hypercom-boot.mp4
+~~~
+
+~~~yml
+startup:
+  content:
+    color: blue
+  duration: 5
+  displayOnPageLoad: true
+  displayOnPowerOn: false
+~~~
+
+## 🗜️ Optimizations
+
+* ❗ Some placeholder images have been converted to `WebP` format to reduce file size. If you are updating an existing installation and you're using placeholder content, you need to either keep the old `GIF` files or update your config file to use the `WebP` versions instead. Affected files are:
+
+  * `example-ad.gif` -> `example-ad.webp`
+  * `example-program.gif` -> `example-program.webp`
+
+* Removed the full-size welcome video since it's quite large and wasn't ever used in the default config file.
+* Compressed all background images to further reduce file size.
+
+## ⚙️ Other Changes
+
+* Added documentation links in help, setup and about screens.
+
+---
+
+# Update Notes - 9/6/2025 (5.2.1)
+
+## 🔧 Bug Fixes
+
+* Fixed an issue where the YouTube player would not properly seek to the correct video index when resuming playback. [#61](https://github.com/zshall/program-guide/issues/61)
+* Improved error handling for YouTube API requests.
+
+## Troubleshooting Improvements
+
+* Pressing `alt + d` will now log the current channel properties to the console.
+
+# Update Notes - 8/18/2025 (5.2.0)
+
+## ✨ New Features
+
+* Started work on a new [documentation site](https://docs.tvs.gcpw.art)! Go check it out for the latest updates, guides, reference materials and more!
+* Added new visualizer options, including customizable presets, duration and blend duration.
+
+~~~yml
+- number: 85
+  abbr: PL1
+  name: Nightwave Plaza
+  description: Nightwave Plaza radio 24/7
+  visualizer:
+    src: http://radio.plaza.one/mp3 # If you want to focus entirely on music you can use the visualizer engine which uses the Milkdrop engine from Winamp
+    visualization: 27 # Optional. Visualization to start with. Leave empty or set to 0 for a random one or choose any number from 1 to 100 to use that preset.
+    visualizationDuration: 20 # Optional. How many seconds before choosing a new random visualization. Defaults to 30. Use 0 to stay on the same visualization indefinitely.
+    visualizationBlendDuration: 1  # Optional. How many seconds to blend visualizations together when switching. Defaults to 2.
+~~~
+
+## 🐛 Known Issues
+
+It appears that Twitch streams may not auto-play anymore after recent updates to Twitch's player. I'm not sure about the future of Twitch integration given this update, but to workaround it I've enabled user interactivity in the player so that you can click the play button to start the stream. Users are reporting errors in Chromium browser but not in Firefox at this time. Due to the nature of how TVS works a permanent fix may be outside of my control.
+
+---
+
+# Update Notes - 7-31-2025 (5.1.1)
+
+📣 Join our new [Discord server](https://discord.com/invite/GkVG5yzYe3)!
+
+## 🔧 Bug Fixes
+
+* Fixes [#83](https://github.com/zshall/program-guide/issues/83): YouTube Playlist Engine is broken
+* Fixes [#81](https://github.com/zshall/program-guide/issues/81): `blur: false` in config file doesn't disable OSD blur
+
+---
+
+# Update Notes - 4-30-2025 (5.1.0)
+
+New features:
+
+* Twitch engine added! You can now embed Twitch.tv streams using the channel's name. The Twitch player will respond to TVS volume controls. You need to be using a secure context to embed Twitch (per their rules) so running on localhost or on HTTPS with a domain name will work.
+
+~~~yml
+- number: 210
+  abbr: TWITCH
+  name: Twitch Stream
+  twitch: twitchsports # You can embed Twitch streams using the channel's name
+~~~
+
+* Added support for dynamic references. If you define a `refs` section, you can define references to content and use it across multiple channels. You can even include references to other references as long as it's not a circular reference that'd cause an infinite loop.
+
+~~~yml
+refs: # Optional. You can define content here that can be reused in multiple places. This is useful for things like an ad that you want to show on multiple channels.
+  ad1: # This is a reference to an ad that can be used in multiple places.
+    image:
+      src: placeholders/example-ad.gif # The image to show for the ad.
+  
+  intro: # This is a reference to an intro that can be used in multiple places.
+    video: placeholders/tvs-intro-sd.m4v # The video to show for the intro.
+  
+  ad2:
+    mix:
+      a:
+        ref: ad1 # You can use references inside other references; but be careful of circular references!
+        mixMode: difference
+      b:
+        ref: intro
+        mixMode: exclusion
+
+channels:
+- number: 190
+  name: Referenced Content
+  abbr: REF
+  ref: ad1 # You can reference content defined in the refs section of the config file. This is useful for reusing content in multiple places.
+
+- number: 191
+  name: Loops with References
+  abbr: REF2
+  loop:
+    content:
+    - ref: ad1 # You can also use references in loops.
+      duration: 3
+    - ref: intro
+    - image: placeholders/sequence/0.jpg
+      duration: 3
+    - image: placeholders/sequence/1.jpg
+      duration: 3
+    - image: placeholders/sequence/2.jpg
+      duration: 3
+
+- number: 192
+  name: Layouts with References
+  abbr: REF3
+  h-split:
+    a:
+      ref:
+        name: ad1 # You can also use references in mixes.
+        overrides: # You can override the properties of the referenced content here. IMPORTANT: this only works if the referenced content doesn't use shorthand properties.
+          # So for instance if you use `image: xyz.png` this won't work. You need to use `image: { src: xyz.png }` instead to do the override.
+          aspectRatioBehavior: contain # Consult the properties of the referenced content for what you can override here.
+    b:
+      ref: intro
+
+- number: 193
+  name: References with overrides
+  abbr: REF4
+  ref:
+    name: ad1 # You can also use references in mixes.
+    overrides: # You can override the properties of the referenced content here. IMPORTANT: this only works if the referenced content doesn't use shorthand properties.
+    # So for instance if you use `image: xyz.png` this won't work. You need to use `image: { src: xyz.png }` instead to do the override.
+      aspectRatioBehavior: contain # Consult the properties of the referenced content for what you can override here.
+
+- number: 194
+  name: References with other references
+  abbr: REF5
+  ref: ad2
+~~~
+
+Enhancements:
+
+* Improved error messaging has been implemented including the start of QR-based error codes where more info is available on the website.
+* Animation added when Weather engine is loading
+
+Bug Fixes:
+
+* Version numbers display properly on About page
+
+---
+
+# Update Notes - 3-30-2025 (5.0.0)
+
+5.0.0 is a substantial under-the-hood rewrite that updates every component in the system to upgrade the underlying frameworks TVS is built upon.
+
+BREAKING CHANGES:
+
+* Removed incompatible Vime library. `video@1` and `video@2` have been removed and should not be used anymore. To fix your config file if it's broken, use `video` rather than `video@1` or `video@2`.
+* `hlsBugFix` option was removed from `video` engine since the bug that it was fixing isn't present anymore.
+* Video game `console` option is no longer recognized; use `core` instead (https://nostalgist.js.org/apis/launch/#core)
+* The "1989" theme should be specified in quotes.
+* Disabled Nightwave Plaza API querying due to CORS blocking.
+
+Replace this:
+
+~~~yml
+guide:
+  theme: 1989
+~~~
+
+To this:
+
+~~~yml
+guide:
+  theme: "1989"
+~~~
+
+Dependency Updates:
+
+* Updated to Svelte 5 and rewrote all content engines to include better type definitions.
+* Updated Nostalgist library to 0.14 from 0.11 to fix some bugs in the VideoGame engine.
+
+Bug Fixes:
+
+* Fixed invalid HTML structure in program guide tables
+* Added better teardown logic for exiting video games
+* Addressed issue where channels were not properly torn down upon channel change
+* Fixed audio volume issues with Visualizer engine
+* Fixed aspect ratio issue in Bouncing Logo engine
+* Fixed verbiage for off-air channels in Channel List engine
+
+New Features:
+
+* Added schema validation support for configuration files. To take advantage of this, add the following line to the top of your configuration file, including the "# " at the beginning:
+
+~~~yml
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+~~~
+
+Then open the file in Visual Studio Code with the [YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) installed.
+
+When new versions of the schema are released I'll call them out in the notes; you'd change the `5.0.0.json` to the latest schema version to validate against it instead.
+
+* Added `stretch` aspect ratio to the Image engine. This will stretch images to the size of their container regardless of aspect ratio.
+* Added `shuffle` parameter to loops that allows you to shuffle them randomly or in such a way that the entire cycle gets played through once, then repeated again.
+
+~~~yml
+- number: 181
+  name: Shuffled Loop
+  abbr: LSHUF
+  loop:
+    shuffle: random # You can shuffle the content in a loop. Use `random` to shuffle the content randomly, or `cycle` to shuffle the content in a cycle.
+    content:
+    - image: placeholders/sequence/0.jpg
+      duration: 3
+    - image: placeholders/sequence/1.jpg
+      duration: 3
+    - image: placeholders/sequence/2.jpg
+      duration: 3
+    - image: placeholders/sequence/3.jpg
+      duration: 3
+    - image: placeholders/sequence/4.jpg
+      duration: 3
+    - image: placeholders/sequence/5.jpg
+      duration: 3
+
+- number: 182
+  name: Cycled Loop
+  abbr: LCYCL
+  loop:
+    shuffle: cycle # Cycle shuffling will play back the content in a random order but show all content before repeating.
+    content:
+    - image: placeholders/sequence/0.jpg
+      duration: 3
+    - image: placeholders/sequence/1.jpg
+      duration: 3
+    - image: placeholders/sequence/2.jpg
+      duration: 3
+    - image: placeholders/sequence/3.jpg
+      duration: 3
+    - image: placeholders/sequence/4.jpg
+      duration: 3
+    - image: placeholders/sequence/5.jpg
+      duration: 3
+~~~
+
+Aesthetics:
+
+* Updated the default welcome image with a new look.
+
+
+---
+
+# Update Notes - 1-27-2025 (4.5.0)
+
+Bug fixes:
+
+* Image aspect ratio behavior was incorrectly called `behavior` and now is called `aspectRatioBehavior`.
+* Overflow scrollbars are now hidden if content overruns the screen
+* We now close an audio context when destroying it, which should help prevent issues with multiple contexts building up. Raspberry Pi 5 is confirmed to play audio better now.
+
+New features:
+
+* New OSD tuner theme based on mid-2010's satellite TV: `sat2012`! Here's an example:
+
+~~~yml
+osd:
+  theme: sat2012
+  aspectRatioBehavior: stretch # Optional. The aspect ratio behavior of the screen. Values are stretch, letterbox, or hybrid. Defaults to hybrid.
+  # primaryColor: red
+  # accentColor: black
+  themeOptions: # certain themes have additional options that can be set like this:
+    providerLogo: placeholders/no-signal.png # Optional. The provider logo to show in the info OSD. If not set the default logo will be shown. If set to false no logo will be shown.
+    extraMenuItemsBefore: # Non-functional extra menu items can be added for asthetic purposes.
+      - Messages
+    extraMenuItemsAfter: # More non-functional menu items.
+      - CC
+      - Last 4
+      - Favorites
+      - Audio/Video
+      - Parental
+~~~
+
+* Added a new about page to show the program version, credits, dependencies and special thanks. Press `alt + v` to go there.
+
+
+---
+
+# Update Notes - 1-12-2025 (4.4.0)
+
+Enhancements:
+
+* Images can now be constrained to aspect ratios if they don't fill the screen.
+
+~~~yml
+- number: 2
+  name: Welcome
+  abbr: HELLO
+  image:
+    src: placeholders/welcome.png # If you use more than one option for images you need to specify the source like this.
+    aspectRatioBehavior: contain # Optional. The aspect ratio behavior of the image. Values are contain or cover. Defaults to cover.
+~~~
+
+
+New features:
+
+* Ability to play background audio in the "no signal" channel
+
+~~~yml
+noSignalContent: # Optional. You can specify content to show when the TV is off the air.
+  image: placeholders/no-signal.png # Required. The image to show when the TV is off the air.
+  backgroundAudio: placeholders/bgm-3.mp3 # Optional. You can add background audio to the no signal screen.
+~~~
+
+* Added ability to specify custom screen dimensions in the config file. After modifying this value it will apply when your picture settings are reset.
+
+~~~yml
+# Screen dimensions defaults can be overridden here. If you don't specify these the TV will be 640x480 by default.
+# Not all channel content will scale to fit the screen; some content will always render at its native resolution (640x480)
+# **Note**: If you change these values, be sure to reset your picture settings using `alt + r` or you won't see the changes.
+dimensions:
+  screenWidth: 1280 # Optional. The width of the screen in pixels.
+  screenHeight: 720 # Optional. The height of the screen in pixels.
+  # scaleX: 100 # Optional. The scale of the screen percentage-wise on the X axis. Default is 100.
+  # scaleY: 100 # Optional. The scale of the screen percentage-wise on the Y axis. Default is 100.
+~~~
+
+* Added customizable OSD behavior when displaying on different screen sizes:
+    * Hybrid (default): centers the OSD where a standard 4:3 screen would be, with tasteful overflow for background graphics.
+    * Stretch: fills the entire available space with the OSD.
+    * Letterbox: centers and crops the OSD to 4:3 screen.
+
+~~~yml
+osd:
+  theme: sat2007
+  aspectRatioBehavior: stretch # Optional. The aspect ratio behavior of the screen. Values are stretch, letterbox, or hybrid. Defaults to hybrid.
+  themeOptions: # certain themes have additional options that can be set like this:
+    showMessageIcon: true
+    showChannelLockIcon: true
+~~~
+
+---
+
+# Update Notes - 1-05-2024 (4.3.0)
+
+Bug fixes:
+
+* Fixed bug with TVS overrunning the screen by a pixel or two on certain screen sizes triggering scroll bars.
+* Fixed bug with background audio that would cause audio to sometimes fail on page load.
+* Fixed layout bug in examples page
+* Fixed default program guide font on examples page
+* Fixed bug involving screen bezel size on hard page reload
+
+Enhancements:
+
+* Gave OSD a very slight blur effect when global blurring is on.
+
+New features:
+
+* Added the ability for channels to have icons.
+
+~~~yml
+- number: 44
+  name: 44cast
+  abbr: WX
+  icon: placeholders/weather.png # Optional. Icon to show in the info OSD (if applicable theme applied)
+~~~
+
+* Custom "no signal" overrides for channels without content.
+
+~~~yml
+noSignalContent: # Optional. You can specify content to show when a channel is off the air.
+  image: placeholders/no-signal.png
+~~~
+
+* New OSD theme based on mid-2000's satellite TV: `sat2007`! Here's an example:
+
+~~~yml
+osd:
+  theme: sat2007
+  # primaryColor: "rebeccapurple" # Optional color overrides
+  # accentColor: "white"
+  themeOptions: # certain themes have additional options that can be set like this:
+    showMessageIcon: true # Show the message icon in the top bar
+    showChannelLockIcon: true # Show the channel lock icon in the top bar
+~~~
+
+* New engine that shows a channel slideshow: `channel-list`. Here's an example for it:
+
+~~~yml
+- number: 171
+  name: Custom Channel List
+  abbr: CLIST
+  channel-list: # All options are optional so if you don't use any, use "true" to make it work.
+    # channelRange:
+    #   min: 30 # Optional. The channel to start the channel list with. No channels will be displayed with a lower number than this if specified.
+    #   max: 49 # Optional. The channel to end the channel list with (inclusive). No channels will be displayed with a higher number than this if specified.
+    primaryColor: cyan # Optional. The channel number text color.
+    textColor: black # Optional. The text color for everything else.
+    # showAs: abbr # Optional. The channel list can show abbreviations or names. Defaults to `name`
+    # sort: number # Optional. The channel list can be sorted by number or name. Defaults to `number`
+    # columns: 3 # Optional. The number of columns to display in the grid. Defaults to 2.
+    # duration: 10 # Optional. The duration in seconds before advancing to the next page. Defaults to 10.
+    backgroundImage: false # Optional. You can select a different background image. If set to false no image will be displayed (good for mixing). If not set the default image will be displayed.
+    logo: /placeholders/tv.png # Optional. Logo to show at the top of the channel list
+~~~
+
+More examples are available in the example `config.tvs.yml`.
+
+---
+
+# Update Notes - 12-22-2024 (4.2.2)
+
+* Fixed weather icons not loading when in a subdirectory.
+* Fixed issues where a long Feed Reader title or article would push the entire page off-screen; long titles now scroll horizontally.
+* Updated Nostalgist.js library to 0.11.0
+* Fixed issue in Video Game engine where `megadrive` wasn't a supported core despite appearing in documentation. `genesis` and `megadrive` now point to the same core.
+* Fixed bug where webhook wasn't fired on channel up or down events.
+* Mitigated bug in YouTube Playlist engine when playing private or removed videos that would crash the player by reloading the playlist from the next video.
+
+Experimental:
+* `length` property added to YouTube Playlist engine to specify the number of videos in the playlist manually without needing a YouTube API key for shuffled playlists. I'm still working on trying to figure out why shuffle isn't right and may change the way this engine works in the future.
+
+~~~yml
+- number: 17
+  name: Youtube Playlist Shuffled
+  abbr: YTSFL
+  youtube-playlist:
+    src: PLU1WjbywtZxEGdTPm-qB0KzPGkRPw6npl
+    shuffle: true # Optionally you can shuffle playlists this way. You need to specify the playlist ID above using src if you include more options.
+    length: 13 # Optionally manually specify the length of the playlist so that no API key is needed to determine it.
+~~~
+
+---
+
+# Update Notes - 12-21-2024 (4.2.1)
+
+* Fixed bug in weather engine where radar station was being used for observations when observation stations should be used instead.
+
+---
+
+# Update Notes - 12-19-2024 (4.2.0)
+
+* Fixed bug in bouncing logo engine where the logo wouldn't draw on load.
+* Fixed bug with audio blips on channel changes when muted
+* Fixed screen stretching function so that the entire TV container stretches, not the inside contents of the container.
+* Added channel permalinks. By default now TVS will populate the document hash with the channel number. When you refresh TVS the previous channel will be loaded. You can change the way this works by using `persistCurrentChannel: localstorage` to save the current channel to local storage instead of URL on change, or `persistCurrentChannel: false` to use the old behavior of not saving the channel on change. Permalinks will work regardless.
+* Added toggle for animated channel change. In the config file set `animateChannelChange: false` to disable the "shake" effect when the screen changes.
+* Added cache busting for the config file, since often this file is often cached more aggressively than we want. To disable this feature you'll need to edit the environment file under `_app/env.js`: use `export const env={"PUBLIC_USE_CACHE_BUSTER":"false"}` instead of true.
+* Added webhook support for external integrations. This is for receiving data *from* TVS, not sending to it. TVS will call these webhooks when channel, volume or mute events occur to let your service know it. This is useful if you want to show the channel or volume information on an external display.
+  * All webhooks are sent as GET requests.
+  * The bracketed variables will be replaced at the time that the webhook is fired. If TVS is showing channel 12 then `channel={channel}` will become `channel=12`.
+
+~~~yml
+# webhooks: # Optional. You can set up webhooks to send data to external services when certain events happen.
+#   channelChange: http://your-server/receive_update?channel={channel}&manual={isManualInput} # Optional. This is the URL that will be called when the channel changes. The channel number and whether it was a manual input will be sent as query parameters.
+#   volumeChange: http://your-server/receive_update?volume={volume} # Optional. This is the URL that will be called when the volume changes. The volume level will be sent as a query parameter.
+#   muteChange: http://your-server/receive_update?isMuting={isMuting} # Optional. This is the URL that will be called when the muting or unmuting. The mute state will be sent as a query parameter.
+~~~
+
+---
+
+# Update Notes - 12-02-2024 (4.1.0)
+
+* Added ability to disable the on-screen display entirely, or parts of it.
+
+~~~yml
+osd: false # You can disable the on-screen displays entirely by setting this to false.
+~~~
+
+~~~yml
+# You can also disable parts of the OSD individually. The following options are available:
+osd:
+  tuner: false # You can disable the tuner OSD by setting this to false.
+  info: false # You can disable the info OSD by setting this to false.
+  receiver: false # You can disable the receiver OSD by setting this to false.
+~~~
+
+---
+
+# Update Notes - 11-23-2024 (4.0.1)
+
+* Fixed zoom bug on small window sizes introduced in previous update.
+* Beginning to update TVS's versions to use semantic versioning so that they show up correctly in GitHub releases and make it easier on users to tell when breaking changes occur.
+
+---
+
+# Update Notes - 11-21-2024 (4.0.0)
+
+* Breaking change: guide alerts are attached to specific channels now; if you have a channel alert on channel 1 for instance but don't have a channel 1 in the lineup it won't be shown.
+* Rewrote and restructured large parts of the Guide engine to support multiple themes. Two are supported as of this release: the default one and "1989", a classic single-slot guide in the style of the EPG (https://prevueguide.com/wiki/EPG_Sr.)
+* Added the ability to filter guides by channel ranges.
+* Modified the external listings data structure (TVSL JSON) to allow for more precise listings; listings are now measured by width in minutes and are not rounded down to the nearest timeslot anymore. Listings can fluidly span between guide timeslots in the default theme, and are displayed in a list in the 1989 guide separated by time. There's an example program available here that converts XMLTV to TVSL JSON: https://github.com/zshall/TelevisionSimulatorGuideData
+* Added multiple guide examples to the default config file demonstrating custom colors and external listings (if you have a TVSL JSON file to parse).
+* Changed the way that guide scrolling works to be more accurate; timeslot headers stick to the top of the guide until a new header replaces them.
+* Changed the way that auto-scaling works to use `zoom` CSS instead of `transform` to mitigate bugs when scrolling.
+
+~~~yml
+- number: 170
+  name: Guide 1989 full example
+  noiseBlendMode: multiply
+  guide:
+    theme: 1989
+    themeOptions: # Some themes have extra settings that can only be applied in these themes.
+      title: Cable TV Guide # Optional. A title to show at the top of the guide
+      ticker: # Optional. A scrolling text bar at the bottom of the guide. Put a list of messages you want shown here.
+      - "Hypercom cable - connecting you to the future"
+      - "Pay-Per-View Movies - Ch 1 - Straight from Hollywood to your home, anytime!"
+    channelRange:
+      min: 1 # Optional. The channel to start the guide with. No channels will be displayed with a lower number than this if specified.
+      max: 100 # Optional. The channel to end the guide with (inclusive). No channels will be displayed with a higher number than this if specified.
+~~~
+
+---
+
+# Update Notes - 10-17-2024
+
+* Added `feed-reader` engine. This component will load an RSS feed and display articles one at a time. Articles should have a title and content.
+* Added `color` engine. You can display a plain background with either a solid color or a CSS gradient.
+* Added a new `mix` layout. You can use it to superimpose one component on top of another full-screen using any CSS mix mode and also vary transparency of either component (from `0.0` to `1.0`)
+
+Here's a simple example of the feed reader:
+
+~~~yml
+- number: 33
+  name: Local News
+  abbr: NEWS
+  feed-reader: /placeholders/news.rss
+~~~
+
+A full example is in the `config.tvs.yml` demo file. There are a few new examples in there, including layouts and colors.
+
+To make the RSS feed load properly make sure the server is sending it with CORS headers. If it isn't, you may need a locally hosted proxy such as [cors-everywhere](https://github.com/Rob--W/cors-anywhere).
+
+---
+
+# Update Notes - 9-25-2024
+
+Hotfix to address bug surfaced in newest Chromium version (129) related to overflow. TV screen is now `overflow: hidden`.
+
+---
+
+# Update Notes - 9-21-2024
+
+* Added custom key remapping. You can now reassign keys to any button or combination of buttons supported by the browser.
+
+Here's an example of how this works:
+
+~~~yml
+inputMapping: # Optional. You can override the default keyboard commands here.
+  volumeUp: q # For any key you override, the default key will be unassigned.
+  volumeDown: a # The combos supported should be in lower-case; the keys supported can be found at https://github.com/madrobby/keymaster?tab=readme-ov-file#supported-keys
+  power: shift+p, enter # Using + will require multiple keys to be pressed at the same time. Using , will assign multiple combos to the same function.
+  # Important: the browser may have some reserved key combos that can't be overridden. If you're having trouble with a key combo, try another one.
+~~~
+
+The commands available to override are:
+
+* `0`
+* `1`
+* `2`
+* `3`
+* `4`
+* `5`
+* `6`
+* `7`
+* `8`
+* `9`
+* `channelDown`
+* `channelUp`
+* `help`
+* `info`
+* `mute`
+* `power`
+* `resetPicture`
+* `scaleDownX`
+* `scaleDownY`
+* `scaleUpX`
+* `scaleUpY`
+* `setup`
+* `toggleAutoScale`
+* `toggleBezels`
+* `toggleBezelType`
+* `toggleBlur`
+* `toggleChangeChannelNoise`
+* `toggleClosedCaptions`
+* `toggleNoise`
+* `toggleOSD`
+* `toggleRemotePairingCode`
+* `toggleScanlines`
+* `toggleShadowMask`
+* `toggleShadowMaskType`
+* `version`
+* `volumeDown`
+* `volumeUp`
+
+---
+
+# Update Notes - 9-15-2024
+
+* PLS playlist file support added in `backgroundAudio` engine for tracks accessible via the web. An example playlist is provided in the placeholders directory.
+* PLS files will provide info about what's now playing to the audio info engine.
+* If you're using IIS on Windows to host the files, a new MIME type was added to the `web.config` file included for this purpose.
+
+Here's the playlist example:
+
+~~~yml
+- number: 53
+  name: Playlist Example
+  abbr: PLS
+  image: placeholders/channel-53.png
+  backgroundAudio: placeholders/playlist-example.pls # You can use a playlist file to play audio. This can be a local file or a remote one but the contents need to be accessible via the web. Currently only PLS files are supported.
+  backgroundAudioOptions:
+    shufflePlaylist: true # Optional. If you want to shuffle the playlist set this to true. Only has an effect if a playlist file is used.
+~~~
+
+---
+
+# Update Notes - 9-9-2024
+
+* Added custom color support for the Guide engine.
+* `guide` can have the following new options:
+
+~~~yml
+      guide: # Program guides read the current channel lineup to reconstruct listings based off channel numbers, title and description. https://greenhillplaza.notion.site/Program-Guides-46e80919a3754efa9769f74dd00946fe?pvs=4
+        primaryColor: white # The primary color of the guide; this is used for the default background color of guide cells
+        secondaryColor: blue # The secondary color of the guide; this is used for the text color of headers and channel numbers
+        textColor: black # The text color of the guide; this is used for the text color of guide cells
+~~~
+
+* Refactored the color scheme library to be accessible for more purposes.
+
+---
+
+# Update Notes - 9-7-2024
+
+* Power-off and power-on effects have been added; to disable, use `warmup: false` in the config file.
+* To change the length of the warmup effect, set `warmup` to a number in seconds.
+* Fixed more teardown code.
+
+It looks like my bug report for Vidstack is being worked on, the workaround code will be able to be removed when that's done which should improve stability.
+
+---
+
+# Update Notes - 8-31-2024
+
+# Breaking changes
+
+* Vidstack is now the default video provider. To use the deprecated Vime video provider use `video@1` instead of `video`.
+
+# Bug fixes
+
+* To that end, the Vidstack provider has been cleaned up and a bug involving loading incorrect URLs with YouTube and Vimeo was fixed.
+
+Please report any bugs you encounter using Vidstack since Vime will be removed at some point.
+
+---
+
+# Update Notes - 8-29-2024
+
+### New Features
+
+* Background Audio Interrupts are now available.
+
+~~~yml
+      - video:
+          src: https://www.youtube.com/watch?v=OlfL5TWWBtg
+          interruptsBackgroundAudio: true # While any piece of content designated as interrupting background audio is on-screen, the background audio will be paused.
+~~~
+
+### Opt-In
+
+* Experimental new video engine is available using [Vidstack](https://www.vidstack.io/) instead of Vime. To use it change `video` components to `video@2`, like so:
+
+~~~yml
+  - video@2:
+      provider: youtube
+      src: OlfL5TWWBtg
+~~~
+
+* **Vidstack will replace Vime** as the default engine in the future, but I haven't tested it enough yet.
+* Sunsetting Vime will occur in 3 stages:
+	* Opt-in (currently as of 8-29-2024)
+	* Opt-out (switch back to `video`, `video@1` and `video@2` will be deprecated)
+	* `video@1` and `video@2` aliases will be removed, Vime will be removed and Vidstack will power `video` engine.
+* Dailymotion support is unavailable in Vidstack.
+
+### Bug fixes and enhancements:
+
+* Fixed some autoScale problems from yesterday regarding state changes when `autoScale` is set to false in the config file and hasn't been manually set yet.
+* Added autoScale and a description of it to the `/setup` page.
+* Added more agressive teardown code to combat a bug that continues to evade me regarding nested content: https://github.com/sveltejs/svelte/issues/5268
+* Press `V` to see version information.
+* Custom mouse cursor
+
+---
+
+# Update Notes - 8-28-2024
+
+A few quality of life improvements today:
+
+* Added full-screen toggle button to the touch menu. Long-press or click and hold on the TV to toggle this menu!
+* Added status messages on all picture adjustments; when pressing a picture adjustment shortcut you'll get a status update on what you changed.
+* AutoScale has a manual override toggle: Alt + 7
+
+---
+
+# Update Notes - 8-24-2024
+
+Today's update is all about improved stability.
+
+* Config examples have been updated to allow running in a subdirectory. It's finally possible!
+* If you have an existing config file and want to convert it to run in a subdirectory, remove the leading slash from local content. `/placeholders/...` should just be `placeholders/...` for instance.
+* Example files have a new parameter called `baseDirectory` which is only really useful for loading them from the `/examples` page. You likely won't need this parameter in your main `config.tvs.yml` file.
+* YouTube videos were not respecting volume controls and now mute themselves now if the volume is set to 0.
+* `autoScale` wasn't working properly as when set to false it would still resize due to how config files were loaded. Those problems are fixed now.
+* About page now shows the TVS logo.
+
+---
+
+# Update Notes - 8-20-2024
+
+* Added a [Docker image](https://hub.docker.com/r/zshall/television-simulator) for easier deployment.
+* Added info button components - press `I` to open the info screen.
+* Currently supported audio info providers are Icecast, Azuracast and a custom one for Nightwave Plaza. Let me know in the chat room if there's any other providers you'd like to see added!
+* To make use of audio info you'll need to at minimum add the following background audio options:
+
+~~~yml
+  backgroundAudio: http://radio.plaza.one/mp3
+  backgroundAudioOptions:
+    description: Nightwave Plaza Radio # Optional. Credits will appear in the Info OSD
+    nowPlayingUrl: https://api.plaza.one/status # Optional. If the radio service you're using has a song history API you can link to it here.
+    nowPlayingProvider: plaza-one # Required if using nowPlayingUrl. Only a few providers are supported right now; see the documentation for more info.
+~~~
+
+~~~yml
+  backgroundAudio: http://icecast.example.com/radio.mp3
+  backgroundAudioOptions:
+    description: Icecast example
+    nowPlayingUrl: http://icecast.example.com/status-json.xsl
+    nowPlayingProvider: icecast
+~~~
+
+~~~yml
+  backgroundAudio: https://azuracast.example.com/listen/station_name/radio.mp3
+  backgroundAudioOptions:
+    description: Station Name
+    nowPlayingUrl: https://azuracast.example.com/api/nowplaying_static/station_name.json
+    nowPlayingProvider: azuracast
+~~~
+
+---
+
+# Update Notes - 8-11-2024
+
+* Fixed audio bug where channel changes that use same background audio source wouldn't be reloaded.
+* Updated audio system with new granular controls: in Generator, Keno, Video, Visualizer, and YouTube Playlist engines you can set a `volume` parameter to a number between 0 and 1, or set it to false. Here's an example:
+
+~~~yml
+  video:
+    volume: false # You can mute the video entirely if you want.
+    provider: ...
+    src: ...
+~~~
+
+* `BackgroundAudioOptions` section was added with new optional features for filtering, adjusting volume and adding white noise to the audio:
+
+~~~yml
+  backgroundAudio: ...
+  backgroundAudioOptions:
+    volume: 0.9 # You can adjust the volume of the background audio per-channel
+    # corsMitigation: true # If you're hosting the app on a server that doesn't support CORS you can enable this to disable audio processing. The filter effects won't work but the audio should play (if CORS is the issue)
+    filterType: highpass # You can apply a filter to the audio; values are lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass
+    filterFrequency: 1000 # The frequency of the filter in Hz
+    # noise: 0.08 # You can add white noise to the audio too
+~~~
+
+* Made a race condition bug in the video game engine less likely by destroying the component when it finishes loading if channel is changed while it loads.
+
+* Added new Bouncing Logo engine which loads an image that bounces around the screen, changing its color whenever it hits the screen. The image should be transparent and a single color for the effect to look right.
+
+~~~yml
+- number: -2
+  name: DVD Player
+  bouncing-logo: https://upload.wikimedia.org/wikipedia/commons/e/e7/DVD-Video_Logo.svg # The bouncing-logo engine allows you to display an image that bounces around the screen in the style of a DVD logo screensaver.
+~~~
+
+
+---
+
+# Update Notes - 7-27-2024
+
+* Added another placeholder background music track
+* Basic text is refreshed from data source when the last page is reached before going back to the first page
+* Fixed bug where local audio wouldn't loop
+* Fixed but with HLS live streaming in Safari
+* Fixed signaling issues with Slideshow engine
+* Custom OSD color extends to remote pairing screen
+* Support added for local and custom PeerJS servers
+* Added touch gesture support using HammerJS
+* Added some new configuration examples
+* Added kiosk mode to disable certain features and an example configuration file
+
+---
+
+# Update Notes - 7-08-2024
+
+* Added screen bevels; 2 different types are present by default. They can be enabled or disabled using "alt + 6" and the type can be changed with "shift + alt + 6". You can also default this type via the config file:
+
+bezel: flat
+# or
+bezel: cylindrical
+
+* Fixed the help page to add some missed keyboard shortcuts.
+* Started the process of reorganizing resources so that eventually TVS will be able to run from a subdirectory.
+
+---
+
+# Update Notes - 7-07-2024
+
+* Added Vimeo and Dailymotion provider support
+* You no longer need to specify providers in many cases for videos; simply linking to a YouTube video or Dailymotion or Vimeo will detect the video ID.
+
+---
+
+# Update Notes - 7-02-2024
+
+* Press F1 to view keyboard shortcuts; the close button in the window title bar will take you back to the TV or you can press back on your browser.
+* Number keys on the numpad can be used to change channels as well as the number keys at the top of your keyboard now. The Keymaster library providing shortcuts was updated to a fork with extended functionality.
+* Added Video Game engine that supports NES, SNES, Genesis and Game Boy emulation using Nostalgist.js; there's an example at the bottom of the provided config file.
+* Line inputs (defined by negative channel numbers) are now hidden from the channel guide.
+
+---
+
+# Update Notes - 6-20-2024
+
+* Fixed off-air channel display in guide
+* Added digital cable box theme for receiver
+* Removed fade transitions from default OSD theme
+* Added new background music to placeholders directory and beta welcome image
+
+---
+
+# Update Notes - 5-16-2024
+
+* Added digital cable box theme for tuner. Coming soon is a digital receiver theme.
+
+To use the digital tuner here's an example:
+
+osd:
+  tuner:
+    theme: digital
+
+---
+
+# Update Notes - 5-13-2024
+
+* Ability to override specific OSD components. Example:
+
+osd:
+  # default settings
+  primaryColor: "#00FFFC"
+  accentColor: "#F600FF"
+  tuner: # tuner-specific overrides
+    primaryColor: red
+    accentColor: black
+  receiver: # receiver-specific overrides
+    primaryColor: "#36FF00"
+    accentColor: black
+
+---
+
+# Update Notes - 5-12-2024
+
+* Added ability to change On-Screen Display colors in the configuration file. Here's an example:
+
+osd:
+  primaryColor: "#00FFFC"
+  accentColor: "#F600FF"
+
+---
+
+# Update Notes - 5-11-2024
+
+* Made the white noise on channel change less harsh.
+* Added split layout example configurations to match the documentation.
+* Added basic text advertisement example as well as default setting support (data structure not yet finalized)
+
+---
+
+# Update Notes - 5-10-2024
+
+Added white noise generator to play when TV has no signal, also added optional white noise to play whenever changing channels. Use keyboard shortcut `alt+5` to enable or disable this effect, or set `changeChannelNoise: false` in the top level of your configuration file.
+
+Fixed bug where background audio volume wasn't updating when we adjust volume.
+
+---
+
+# Update Notes - 5-09-2024
+
+H-Split and V-Split layouts added. Each one has two properties: A and B. Guide layout has been updated to make use of this by default. Should allow greater flexibility in designing channels, but you will need to update your guide to remove the `upperContent` section! This is ignored in this new build. There's an example under `config-examples/03-guide.tvs.yml`  that shows it in detail.
+
+Remote has been updated to look better and includes numeric buttons. A known issue I'm looking into is the rate limiting I've seen from PeerJS and the disconnection events. This may only be solved if I set up a new negotiation server but we'll see.
+
+Added a new `applicationTitle` parameter that allows you to change the title of the page in configuration after it loads.
+
+Contact me on Slack or through other channels if you want to talk about anything related to TVS. Thank you again for helping me test!

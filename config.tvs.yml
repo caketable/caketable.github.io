@@ -1,0 +1,786 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.9.0.json
+
+# Documented configuration file.
+# Data that is required will be denoted as such. Anything that isn't required can be commented out / removed.
+# More options are available than are in this file, and links are provided to relevant parts of the documentation.
+
+##### VISUAL EFFECTS #####
+# REFERENCE:
+# https://greenhillplaza.notion.site/Visual-Effects-68ae52d438344b9598cd4ac86cc2a0e5
+#
+# These options control the picture and the window.
+##########################
+
+applicationTitle: Television Simulator Public Beta # Optional. The title of the webpage; make it your own!
+scanlines: true # Optional. Scanlines are enabled by default but if you don't want them you can set this to false. On a real CRT it's best to disable these and shadow masks.
+shadowMask: aperture-grille # Optional. The default shadow mask to simulate a CRT screen. Values are slot-mask, dot-mask, or aperture-grille. To disable, set to false.
+noise: 0.15 # Optional. Default amount of picture noise to apply
+blur: 1 # Optional. Default amount of blur to apply to the picture; set to false to disable
+bezel: flat # Optional. You can specify a bezel image to go around the outside of the screen. Values are none, cylindrical or flat.
+# animateChannelChange: false # Optional. By default the TV will shake the screen a bit when changing channels. If you want to disable this set to false.
+# changeChannelNoise: false # Optional. By default the TV will add noise to the picture when changing channels. If you want to disable this set to false.
+# autoScale: false # Optional. By default the TV will scale to fit the window. If you want to disable this set to false.
+# border: placeholders/border.png # Optional. You can specify a repeating pattern a background image around the outside of the screen
+# warmup: false # Optional. By default the TV will warm up and cool down when you power it on and off. If you want to disable this set to false. If set to a number, it will be the duration of the warmup in seconds.
+
+# Uncomment the lines below to use the digital cable box theme instead of the default on-screen displays
+# osd:
+#   theme: digital
+#   primaryColor: "#00FFFC"
+#   accentColor: "#F600FF"
+
+# Uncomment the lines below to use the Sat1992 theme inspired by early-90s C-band satellite TV
+# osd:
+#   theme: sat1992 # 1990's analog C-band satellite receiver theme
+#   themeOptions:
+#     # showChannelInterference: false # by default, we display overlays of interference when tuning to a new channel. Set this to false to disable those.
+#     satellite: C1 # the default satellite for all channels to be on. If unset, only channels with a satellite option set will display one.
+#     satellites: # you can define a list of different satellites; they'll be a letter and number combination followed by a 4-digit number representing the location in the sky
+#       C1: 3600 # these are all arbitrary numbers
+#       C3: 4100
+#       C4: 4300
+#       C5: 4550
+#       G1: 4550
+#       G2: 4700
+#       G3: 5100
+#       G4: 6200
+#       T3: 6900
+
+# Uncomment the lines below to use the Sat2007 theme inspired by mid-2000 satellite TV
+# osd:
+#   theme: sat2007
+#   # primaryColor: "rebeccapurple" # Optional color overrides
+#   # accentColor: "white"
+#   # aspectRatioBehavior: stretch # Optional. The aspect ratio behavior of the screen. Values are stretch, letterbox, or hybrid. Defaults to hybrid.
+#   themeOptions: # certain themes have additional options that can be set like this:
+#     showMessageIcon: true # Show the message icon in the top bar
+#     showChannelLockIcon: true # Show the channel lock icon in the top bar
+
+# Uncomment the lines below to use the Sat2012 theme inspired by mid-2010 satellite TV
+# osd:
+#   theme: sat2012
+#   aspectRatioBehavior: stretch # Optional. The aspect ratio behavior of the screen. Values are stretch, letterbox, or hybrid. Defaults to hybrid.
+#   # primaryColor: red
+#   # accentColor: black
+#   themeOptions: # certain themes have additional options that can be set like this:
+#     # providerLogo: placeholders/no-signal.png # Optional. The provider logo to show in the info OSD. If commented out or not set the default logo will be shown. If set to false no logo will be shown.
+#     extraMenuItemsBefore: # Non-functional extra menu items can be added for asthetic purposes.
+#       - Messages
+#     extraMenuItemsAfter: # More non-functional menu items.
+#       - CC
+#       - Last 4
+#       - Favorites
+#       - Audio/Video
+#       - Parental
+
+# osd: false # You can disable the on-screen displays entirely by setting this to false.
+
+# You can also disable parts of the OSD individually. The following options are available:
+# osd:
+#   tuner: false # You can disable the tuner OSD by setting this to false.
+#   info: false # You can disable the info OSD by setting this to false.
+#   receiver: false # You can disable the receiver OSD by setting this to false.
+
+# Screen dimensions defaults can be overridden here. If you don't specify these the TV will be 640x480 by default.
+# Not all channel content will scale to fit the screen; some content will always render at its native resolution (640x480)
+# **Note**: If you change these values, be sure to reset your picture settings using `alt + r` or you won't see the changes.
+# dimensions:
+#   screenWidth: 1280 # Optional. The width of the screen in pixels.
+#   screenHeight: 720 # Optional. The height of the screen in pixels.
+#   # scaleX: 100 # Optional. The scale of the screen percentage-wise on the X axis. Default is 100.
+#   # scaleY: 100 # Optional. The scale of the screen percentage-wise on the Y axis. Default is 100.
+
+# inputMapping: # Optional. You can override the default keyboard commands here.
+#   volumeUp: q # For any key you override, the default key will be unassigned.
+#   volumeDown: a # The combos supported should be in lower-case; the keys supported can be found at https://github.com/madrobby/keymaster?tab=readme-ov-file#supported-keys
+#   power: shift+p, enter # Using + will require multiple keys to be pressed at the same time. Using , will assign multiple combos to the same function.
+#   # Important: the browser may have some reserved key combos that can't be overridden. If you're having trouble with a key combo, try another one.
+
+# persistCurrentChannel: localstorage # Optional. By default TVS will change the active URL to include the current channel when manually changed. Other options are: localstorage, url, or false to disable.
+
+# startup: # Optional. You can specify content to show when the TV is first powered on before going to the default channel.
+#   content: # Required. The content to show on startup.
+#     video: placeholders/hypercom-boot.mp4 # This can be any content engine; in this case it's a video.
+#   duration: 3 # Required if the content engine doesn't support end detection. This is the duration in seconds to show the startup content before going to the channels.
+#               # Setting duration to 0 will make the startup content play *indefinitely* until interrupted by the user changing the channel or powering off the TV.
+#   displayOnPageLoad: true # Optional. By default the startup content will show when the page is loaded. If you want to disable this set to false.
+#   displayOnPowerOn: true # Optional. By default the startup content will show when the TV is powered on using the power button. If you want to disable this set to false.
+
+##### Webhooks #####
+# You can set up webhooks to send data to external services when certain events happen, for the purpose of automation or integration.
+# All requests are sent as GET requests with query parameters.
+# This is for you to receive data *from* TVS only; you can't send data to TVS with these.
+# webhooks: # Optional. You can set up webhooks to send data to external services when certain events happen.
+#   channelChange: http://your-server/receive_update?channel={channel}&manual={isManualInput} # Optional. This is the URL that will be called when the channel changes. The channel number and whether it was a manual input will be sent as query parameters.
+#   volumeChange: http://your-server/receive_update?volume={volume} # Optional. This is the URL that will be called when the volume changes. The volume level will be sent as a query parameter.
+#   muteChange: http://your-server/receive_update?isMuting={isMuting} # Optional. This is the URL that will be called when the muting or unmuting. The mute state will be sent as a query parameter.
+
+refs: # Optional. You can define content here that can be reused in multiple places. This is useful for things like an ad that you want to show on multiple channels. @since 5.1.0
+  ad1: # This is a reference to an ad that can be used in multiple places.
+    image:
+      src: placeholders/example-ad.webp # The image to show for the ad.
+  
+  intro: # This is a reference to an intro that can be used in multiple places.
+    video: placeholders/tvs-intro-sd.m4v # The video to show for the intro.
+  
+  ad2:
+    mix:
+      a:
+        ref: ad1 # You can use references inside other references; but be careful of circular references!
+        mixMode: difference
+      b:
+        ref: intro
+        mixMode: exclusion
+  
+  loop-1:
+    loop:
+      shuffle: random
+      limit: 1
+      content:
+      - image: placeholders/sequence/1.jpg
+        duration: 3
+      - image: placeholders/sequence/2.jpg
+        duration: 3
+  
+  loop-2:
+    loop:
+      shuffle: random
+      limit: 2
+      content:
+      - image: placeholders/sequence/3.jpg
+        duration: 3
+      - image: placeholders/sequence/4.jpg
+        duration: 3
+      - image: placeholders/sequence/5.jpg
+        duration: 3
+
+##### CHANNELS #####
+# REFERENCE:
+# https://greenhillplaza.notion.site/Television-Simulator-99-c28584f069b94f58a71b5c9fe2484dcb#8969cd7aff0e4d569efa77b15cbacf51
+#
+# The rest of this file is about defining a channel lineup.
+####################
+
+# noSignalContent: # Optional. You can specify content to show when a channel is off the air.
+#   image: placeholders/no-signal.png
+
+defaultChannel: 2 # Required. The default channel to start on when visiting the page.
+
+channels: # starts a list of channels. Every channel below begins with a "-" as that lets YAML know we're defining a list.
+
+- number: 1 # Required. Every channel needs a unique number. Negative numbers indicate line inputs, so -1 will be displayed as "LINE 1". Channel 0 is displayed as the TV's "MENU".
+  name: On Demand # Required. The name of the channel.
+  abbr: ON # Required. An abbreviation for the channel; try to keep it short.
+  image: placeholders/channel-1.png # Channel content. If there's none the TV will play static. There are various content engines available with lots of different configurations. In this case it's an image.
+  backgroundAudio: placeholders/bgm-3.mp3 # Optional. You can add background audio to any channel. This works well with radio streams, but you could use any audio file that the browser supports too.
+
+# In YAML the indentation of things matters; keep it consistent and you should be good. In this file I'm using two spaces for tabs. Your editor may do things differently so watch out for that!
+
+- number: 2
+  name: You're Watching Television Simulator
+  abbr: TVS
+  video:
+    src: placeholders/tvs-loop.mp4
+    aspectRatioBehavior: cover # Optional. The aspect ratio behavior of the video. Values are contain, cover, or stretch. Defaults to contain.
+  themeOptions: # optional section for theme-specific metadata (currently only used in the sat1992 theme but more themes will support this in the future)
+    satellite: C3 # you can designate a channel as being on a particular satellite; choose from the list you defined in the OSD themes
+
+- number: 3
+  name: Welcome
+  abbr: HELLO
+  title: Public Beta Testing # Optional. Title to show in the channel guides, including program guide channels and in the digital cable theme's on-screen guide.
+  description: Thanks for testing Television Simulator '99, Public Beta! # Optional. Description to show in the guide.
+  image:
+    src: placeholders/welcome.png # If you use more than one option for images you need to specify the source like this.
+    aspectRatioBehavior: contain # Optional. The aspect ratio behavior of the image. Values are contain or cover. Defaults to cover.
+  backgroundAudio: placeholders/bgm-2.mp3
+  themeOptions: # optional section for theme-specific metadata (currently only used in the sat1992 theme but more themes will support this in the future)
+    satellite: C5 # you can designate a channel as being on a particular satellite; choose from the list you defined in the OSD themes
+
+- number: 4
+  name: TVS Update News
+  abbr: NEWS
+  feed-reader:
+    src: https://docs.tvs.gcpw.art/tvs-changelog.xml
+    title: TVS Update News
+    refreshInterval: 300
+    scrollSpeed: 35
+    scrollDelay: 6
+
+- number: 6
+  name: Movie Previews
+  abbr: PREV
+  title: Sneak Prevue
+  description: Preview the hottest movies on Pay-Per-View and On Demand!
+  video: https://archive.org/download/capture-a-6776/CaptureA_6776.mp4 # This channel features video instead of an image. By default you link directly to a video file.
+
+- number: 8 # for the sake of example let's show what an off-air channel looks like.
+
+- number: 5
+  name: Animated GIF
+  abbr: GIF
+  image: https://c.tenor.com/kgNBW3GoSRoAAAAd/tenor.gif # You can link to external assets.
+  backgroundAudio: http://radio.plaza.one/mp3
+
+- number: 9 # You can skip channels; you don't need to define them in order either.
+  name: Action Network
+  abbr: ACT
+  backgroundAudio: placeholders/bgm-3.mp3
+  loop: # The main content on this channel is a loop instead of an image or video. This is a container engine that holds all of the sub-content in the list below. When one piece of content ends, the next begins.
+  - video: # Let's embed a YouTube video first.
+      provider: youtube # To embed youtube videos you use the youtube provider. More providers will be available later.
+      src: yXkIHyBfns8 # This is the video ID. When the video is done playing we'll move to the next content.
+      interruptsBackgroundAudio: true # While any piece of content designated as interrupting background audio is on-screen, the background audio will be paused.
+  - image: placeholders/example-ad.webp
+    duration: 5 # The image will play forever without a special duration option that works on all loop content. This is a duration in seconds before ending the content and going to the next.
+  - video:
+      src: placeholders/tvs-intro-sd.m4v # Directly linked videos that aren't livestreams will advance to the next content when they've ended too.
+      interruptsBackgroundAudio: true
+  - video:
+      provider: youtube
+      src: m6iV1CkCnWk
+      interruptsBackgroundAudio: true
+  - image: placeholders/random-placeholder.jpg
+    duration: 10
+
+- number: 15
+  name: Blender Network
+  abbr: BLEND
+  backgroundAudio: placeholders/bgm-2.mp3
+  video:
+    volume: false # You can mute the video entirely if you want.
+    provider: hls # The HTTP live streaming provider can be utilized if you have such a video stream.
+    src: https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
+
+- number: 16
+  name: YouTube Playlist
+  abbr: YTPL
+  youtube-playlist: PLU1WjbywtZxEGdTPm-qB0KzPGkRPw6npl # YouTube playlists are treated differently than standalone videos; you embed them like this using the playlist ID
+
+- number: 17
+  name: Youtube Playlist Shuffled
+  abbr: YTSFL
+  youtube-playlist:
+    src: PLU1WjbywtZxEGdTPm-qB0KzPGkRPw6npl
+    shuffle: true # Optionally you can shuffle playlists this way. You need to specify the playlist ID above using src if you include more options.
+
+- number: 18
+  name: Oak Ridge TV
+  abbr: ORTV
+  image: placeholders/example-program.webp
+  noise: 0.3 # Noise can be added per-channel
+  backgroundAudio: placeholders/bgm-2.mp3
+  backgroundAudioOptions:
+    volume: 0.9 # You can adjust the volume of the background audio per-channel
+    # corsMitigation: true # If you're hosting the app on a server that doesn't support CORS you can enable this to disable audio processing. The filter effects won't work but the audio should play (if CORS is the issue)
+    filterType: highpass # You can apply a filter to the audio; values are lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass
+    filterFrequency: 1000 # The frequency of the filter in Hz
+    # noise: 0.08 # You can add white noise to the audio too
+
+- number: 12 # As mentioned previously you can declare channels in any order; they'll be arranged when you begin.
+  name: Program Guide
+  abbr: GUIDE
+  title: Prevue Guide
+  noise: 0.1
+  backgroundAudio: http://radio.plaza.one/mp3
+  backgroundAudioOptions:
+    description: Nightwave Plaza Radio # Optional. Credits will appear in the Info OSD
+    nowPlayingUrl: https://api.plaza.one/status # Optional. If the radio service you're using has a song history API you can link to it here.
+    nowPlayingProvider: plaza-one # Required if using nowPlayingUrl. Only a few providers are supported right now; see the documentation for more info.
+  v-split: # Program guides are traditionally split in half; the top half is advertising and the lower half is the guide data. We use the v-split layout which defines two components, A and B.
+    a: # A is the top part. See: https://greenhillplaza.notion.site/Layouts-728ab1198d4049de8f4b9a4ff6b31efe?pvs=4
+      loop:
+      - slideshow: # Image slideshow; at the end of it we'll advance to the next component in the loop.
+          duration: 10 # Number of seconds per slide
+          images:
+            - placeholders/guide-ad.png
+            - placeholders/tips-01.png
+            - placeholders/guide-ad-2.png
+      - basic-text: # The basic-text engine can display a text slideshow from a data source with rich formatting.
+          src: /config-examples/basic-text/guide-ads.json # This functionality will be improved in future versions; see https://greenhillplaza.notion.site/Basic-Text-9fdb10f4dc7841d28fe92e09904d9aea?pvs=4
+          autoAdvance: true
+      - slideshow:
+          duration: 10
+          images:
+            - placeholders/tips-02.png
+            - placeholders/guide-ad-3.png
+            - placeholders/tips-03.png
+    b: # B is the bottom part
+      guide: # Program guides read the current channel lineup to reconstruct listings based off channel numbers, title and description. https://greenhillplaza.notion.site/Program-Guides-46e80919a3754efa9769f74dd00946fe?pvs=4
+        logo: placeholders/guide-header.png # Logo to show at the top of the guide
+        # primaryColor: white # The primary color of the guide; this is used for the default background color of guide cells
+        # secondaryColor: blue # The secondary color of the guide; this is used for the text color of headers and channel numbers
+        # textColor: black # The text color of the guide; this is used for the text color of guide cells
+        alerts: # "Alerts" that show up at certain positions in the guide.
+          - position: 5  # The channel to show the alert with. Needs to be an existing channel.
+            text: |
+              Severe Thunderstorm Warning issued for Greenhill County until 6:00 PM
+          - position: 100
+            text: | # You can define text over multiple lines but it'll be compressed to a single line.
+              The following county services are unavailable:
+              Greenhill County Sheriff's Office
+              Greenhill County Fire Department
+              Greenhill County Emergency Services
+
+- number: 32
+  name: Newsfeed
+  abbr: NEWS
+  mix:
+    a:
+      color: green
+    b:
+      feed-reader: # The feed reader engine allows you to display RSS feeds on the TV.
+        src: /placeholders/news.rss
+        title: Entertainment News
+        refreshInterval: 300 # Optional. The interval in seconds to refresh the feed. If not specified the feed won't refresh automatically.
+        scrollSpeed: 35 # Optional. The speed to scroll text, in pixels per second. Higher is faster.
+        scrollDelay: 6 # Optional. The delay in seconds before and after scrolling text.
+        backgroundImage: false # Optional. The default image will be displayed if this is set to false. Do this when using in a mix layout to change the background color for instance.
+        # textColor: orangered # The text color of the feed reader; this is used for the text color of feed items
+
+- number: 33
+  name: Local News
+  abbr: NEWS
+  feed-reader: /placeholders/news.rss # The feed-reader engine allows you to display RSS feeds. You can use a local file or a remote one but the contents need to be accessible via the web and contain the proper CORS headers.
+
+- number: 44
+  name: 44cast
+  abbr: WX
+  title: "Weather around the clock"
+  description: "Stay up to date with the latest weather information. Know before you go!"
+  icon: placeholders/weather.png # Optional. Icon to show in the info OSD (if applicable theme applied)
+  backgroundAudio: placeholders/bgm-3.mp3
+  weather: # Weather forecasts can be displayed in a style similar to the WeatherSTAR
+    logo: placeholders/weather.png # Required. Channel logo in the corner
+    provider: usa # Required. This is based on data from the US National Weather Service, and as such only works in the US.
+    units: imperial # Required. The units to use; either imperial or metric
+    # Important: if you host the app on a LAN and use HTTP or use the standalone version, you need to specify a location manually; geolocation will not work.
+    latitude: 32.71742 # Optional. If not specified your location will be requested from the browser
+    longitude: -117.162772 # Optional. If not specified your location will be requested from the browser
+
+- number: 53
+  name: Playlist Example
+  abbr: PLS
+  image: placeholders/channel-53.png
+  backgroundAudio: placeholders/playlist-example.pls # You can use a playlist file to play audio. This can be a local file or a remote one but the contents need to be accessible via the web. Currently only PLS files are supported.
+  backgroundAudioOptions:
+    shufflePlaylist: true # Optional. If you want to shuffle the playlist set this to true. Only has an effect if a playlist file is used.
+
+- number: 72
+  name: Test Pattern
+  abbr: TEST
+  generator: test-pattern # The generator engine allows you to display various generated graphics such as test patterns, color bars and grids
+
+- number: 73
+  name: Color Bars
+  abbr: BARS
+  generator: color-bars # Color bars striped across the screen
+
+- number: 74
+  name: Grid
+  abbr: Grid
+  generator: grid # Calibration grid
+
+- number: 80
+  name: Keno
+  abbr: KENO
+  keno: # The keno engine simulates a game of keno like you'd see on hotel TVs at a casino.
+    drawingMinutes: 1 # Optional. Defaults to 5; draw numbers every x minutes, starting at 12 AM and continuing until the channel is reloaded
+    drawIntervalMs: 600 # Optional. Defaults to 1000; how long to wait between drawing each number in milliseconds
+    centerText: Greenhill Plaza Grand Hotel # Optional. You can define text that sits between the top and bottom halves of the keno board
+
+- number: 85
+  abbr: PL1
+  name: Nightwave Plaza
+  description: Nightwave Plaza radio 24/7
+  visualizer: # If you want to focus entirely on music you can use the visualizer engine which uses the Milkdrop engine from Winamp
+    src: http://radio.plaza.one/mp3
+    visualization: 27 # Optional. Visualization to start with. Leave empty or set to 0 for a random one or choose any number from 1 to 100 to use that preset.
+    visualizationDuration: 20 # Optional. How many seconds before choosing a new random visualization. Defaults to 30. Use 0 to stay on the same visualization indefinitely.
+    visualizationBlendDuration: 1 # Optional. How many seconds to blend visualizations together when switching. Defaults to 2.
+
+- number: 100
+  abbr: FRAME
+  name: IFrame Channel
+  iframe: # You can load up external websites using the IFrame engine
+    src: https://gcpw.art/exhibits/aim/ # Required. The URL to load
+    allowInteraction: true # Optional. If specified you can use your mouse or keyboard to interact with the IFrame.
+
+- number: -1 # Negative numbers indicate line inputs. They don't show up on the channel guide.
+  video-game: # The video-game engine allows you to run RetroArch cores via Nostalgist
+    game: flappybird.nes # The game library by default is from `retrobrews.github.io`. You can specify a game from there directly.
+    core: fceumm # Required. The core to load. See documentation at https://nostalgist.js.org/apis/launch/#core
+    # The video game engine doesn't support granular volume adjustment right now, but mute and unmute work.
+    # Video games use a different set of controls than the rest of the TV but quickly here are some:
+    # D-Pad: U, H, J, K. Start: D, Select: F. ABXY: ZXAS.
+
+- number: -2
+  name: DVD Player
+  bouncing-logo: https://upload.wikimedia.org/wikipedia/commons/e/e7/DVD-Video_Logo.svg # The bouncing-logo engine allows you to display an image that bounces around the screen in the style of a DVD logo screensaver.
+
+# Layouts
+# Layouts are a way to define a channel that has multiple components on the screen at once.
+# A few different layouts exist right now, and more will be added in the future.
+
+- number: 130
+  name: Horizontal Split
+  h-split: # The h-split layout divides the screen in half horizontally; 50% of the screen is dedicated to each component.
+    a: # All layouts follow the same "a" and "b" structure. Each component can be a different content engine, and both are required to be defined.
+      image: placeholders/example-ad.webp # There's nothing special about the components or their properties in the context of a layout.
+    b: # The "a" component is placed first on the screen, and the "b" component is placed second.
+      generator: color-bars
+
+- number: 131
+  name: Vertical Split
+  v-split: # The v-split layout divides the screen in half vertically
+    a:
+      image: placeholders/example-program.webp
+    b:
+      generator: test-pattern
+
+- number: 132
+  name: PIP Layout
+  pip:
+    a:
+      image: placeholders/example-program.webp
+    b:
+      generator: test-pattern
+
+- number: 133
+  name: Mix Layout
+  mix:
+    a:
+      opacity: 0.6
+      image: placeholders/example-program.webp
+    b:
+      mixMode: difference
+      generator: test-pattern
+
+- number: 134
+  name: Lots of Layouts
+  pip:
+    borderColor: yellowgreen
+    borderSize: 8
+    bottom: 40
+    right: 20
+    a:
+      h-split:
+        gapSize: 8
+        gapColor: white
+        splitPercentage: 0.75
+        a:
+          v-split:
+            splitPercentage: 0.75
+            gapSize: 8
+            gapColor: white
+            a:
+              image: placeholders/example-ad.webp
+            b:
+              color: red
+        b:
+          color: yellow
+    b:
+      generator:
+        type: test-pattern
+        volume: false
+
+- number: 140
+  name: Solid color
+  color: blue # The color engine is a simple way to display a solid color
+
+- number: 141
+  name: Gradient color
+  color: "linear-gradient(#e66465, #9198e5)" # The color engine also allows for a standard CSS gradient
+
+- number: 142
+  name: Mix colors
+  mix: # The mix engine allows you to overlay one component on top of another. They will be superimposed directly on top of each other.
+    a:
+      color: red
+      opacity: 0.8
+    b:
+      color: blue
+      mixMode: multiply # The mixMode property allows you to blend the two colors together in different ways. The default is normal.
+      opacity: 1 # The opacity property allows you to adjust the transparency of the top layer. The default is 1.
+
+- number: 160
+  name: Guide with Custom Colors
+  guide: # Program guides read the current channel lineup to reconstruct listings based off channel numbers, title and description. https://greenhillplaza.notion.site/Program-Guides-46e80919a3754efa9769f74dd00946fe?pvs=4
+    logo: placeholders/guide-header.png # Logo to show at the top of the guide
+    channelRange:
+      min: 30 # Optional. The channel to start the guide with. No channels will be displayed with a lower number than this if specified.
+      max: 49 # Optional. The channel to end the guide with (inclusive). No channels will be displayed with a higher number than this if specified.
+    primaryColor: white # The primary color of the guide; this is used for the default background color of guide cells
+    secondaryColor: blue # The secondary color of the guide; this is used for the text color of headers and channel numbers
+    textColor: black # The text color of the guide; this is used for the text color of guide cells
+    alerts:
+      - position: 5 # The channel to show the alert with. Needs to be an existing channel.
+        text: |
+          This guide has custom colors.
+
+- number: 161
+  name: Guide with External Listiongs
+  guide: # Program guides read the current channel lineup to reconstruct listings based off channel numbers, title and description. https://greenhillplaza.notion.site/Program-Guides-46e80919a3754efa9769f74dd00946fe?pvs=4
+    logo: placeholders/guide-header.png # Logo to show at the top of the guide
+    channelRange:
+      min: 0 # Optional. The channel to start the guide with. No channels will be displayed with a lower number than this if specified.
+      max: 400 # Optional. The channel to end the guide with (inclusive). No channels will be displayed with a higher number than this if specified.
+    externalListings: http://localhost:8875/guide # You can load listings from an external JSON file. This is useful for large channel lineups.
+
+- number: 162
+  name: Guide 1989
+  noiseBlendMode: multiply
+  guide:
+    theme: "1989" # You can specify a theme for the guide; this will change the colors and fonts used in the guide.
+    themeOptions: # Some themes have extra settings that can only be applied in these themes.
+      title: Cable TV Guide # Optional. A title to show at the top of the guide
+
+- number: 163
+  name: Guide 1989 custom colors example
+  noiseBlendMode: multiply
+  guide:
+    theme: "1989" # You can specify a theme for the guide; this will change the colors and fonts used in the guide.
+    logo: placeholders/cable-ad-2.png # Optional. Logo to show at the top of the guide
+    channelRange:
+      min: 30 # Optional. The channel to start the guide with. No channels will be displayed with a lower number than this if specified.
+      max: 49 # Optional. The channel to end the guide with (inclusive). No channels will be displayed with a higher number than this if specified.
+    primaryColor: white # Optional. The primary color of the guide; this is used for the default background color of guide cells
+    secondaryColor: blue # Optional. The secondary color of the guide; this is used for the text color of headers and channel numbers
+    textColor: black # Optional. The text color of the guide; this is used for the text color of guide cells
+    alerts:
+      - position: 32
+        text: |
+          This guide has custom colors.
+
+- number: 164
+  name: Guide 1989 external listings
+  noiseBlendMode: multiply
+  guide:
+    theme: "1989"
+    themeOptions:
+      title: Satellite TV Guide
+    channelRange:
+      min: 1 # Optional. The channel to start the guide with. No channels will be displayed with a lower number than this if specified.
+      max: 100 # Optional. The channel to end the guide with (inclusive). No channels will be displayed with a higher number than this if specified.
+    externalListings: http://localhost:8875/guide # You can load listings from an external JSON source. https://github.com/zshall/TelevisionSimulatorGuideData is an example program that generates guide data from XMLTV.
+
+- number: 165
+  name: Program Guide 1989 Split
+  abbr: GUIDE
+  title: Prevue Guide
+  noise: 0.1
+  v-split:
+    a:
+      image: /placeholders/cable-ad-2.png
+    b:
+      guide:
+        theme: "1989"
+        themeOptions:
+          ticker: # Optional. A scrolling text bar at the bottom of the guide. Put a list of messages you want shown here.
+          - "Hypercom cable - connecting you to the future"
+          - "Pay-Per-View Movies - Ch 1 - Straight from Hollywood to your home, anytime!"
+
+- number: 170
+  name: Channel List
+  abbr: LIST # The channel list engine allows you to display a list of channels in a grid format; unlike guides, only the channel number and abbreviation are displayed.
+  channel-list: true # To use the channel list without any customization, use "true".
+
+- number: 171
+  name: Custom Channel List
+  abbr: CLIST
+  channel-list: # All options are optional so if you don't use any, use "true" to make it work.
+    # channelRange:
+    #   min: 30 # Optional. The channel to start the channel list with. No channels will be displayed with a lower number than this if specified.
+    #   max: 49 # Optional. The channel to end the channel list with (inclusive). No channels will be displayed with a higher number than this if specified.
+    primaryColor: cyan # Optional. The channel number text color.
+    textColor: black # Optional. The text color for everything else.
+    # showAs: abbr # Optional. The channel list can show abbreviations or names. Defaults to `name`
+    # sort: number # Optional. The channel list can be sorted by number or name. Defaults to `number`
+    # columns: 3 # Optional. The number of columns to display in the grid. Defaults to 2.
+    # duration: 10 # Optional. The duration in seconds before advancing to the next page. Defaults to 10.
+    backgroundImage: /placeholders/pattern-12.png # Optional. You can select a different background image. If set to false no image will be displayed (good for mixing). If not set the default image will be displayed.
+    logo: /placeholders/tv.png # Optional. Logo to show at the top of the channel list
+
+- number: 180
+  name: Loop
+  abbr: LSHUF
+  loop:
+    content: # You can define the content of the loop using the content property. This is a list of content items that will be played in order.
+    - image: placeholders/sequence/0.jpg
+      duration: 3
+    - image: placeholders/sequence/1.jpg
+      duration: 3
+    - image: placeholders/sequence/2.jpg
+      duration: 3
+    - image: placeholders/sequence/3.jpg
+      duration: 3
+    - image: placeholders/sequence/4.jpg
+      duration: 3
+    - image: placeholders/sequence/5.jpg
+      duration: 3
+
+- number: 181
+  name: Shuffled Loop
+  abbr: LSHUF
+  loop:
+    shuffle: random # You can shuffle the content in a loop. Use `random` to shuffle the content randomly, or `cycle` to shuffle the content in a cycle.
+    content:
+    - image: placeholders/sequence/0.jpg
+      duration: 3
+    - image: placeholders/sequence/1.jpg
+      duration: 3
+    - image: placeholders/sequence/2.jpg
+      duration: 3
+    - image: placeholders/sequence/3.jpg
+      duration: 3
+    - image: placeholders/sequence/4.jpg
+      duration: 3
+    - image: placeholders/sequence/5.jpg
+      duration: 3
+
+- number: 182
+  name: Cycled Loop
+  abbr: LCYCL
+  loop:
+    shuffle: cycle # Cycle shuffling will play back the content in a random order but show all content before repeating.
+    content:
+    - image: placeholders/sequence/0.jpg
+      duration: 3
+    - image: placeholders/sequence/1.jpg
+      duration: 3
+    - image: placeholders/sequence/2.jpg
+      duration: 3
+    - image: placeholders/sequence/3.jpg
+      duration: 3
+    - image: placeholders/sequence/4.jpg
+      duration: 3
+    - image: placeholders/sequence/5.jpg
+      duration: 3
+
+- number: 183
+  name: Nested Loop
+  abbr: LNST
+  loop:
+    shuffle: cycle
+    content:
+    - ref: loop-1 # You can now nest loops inside other loops.
+    - ref: loop-2 # The entirety of the referenced loop will be played (or if there's a limit, that many items from it) before we go onto the next item in the parent loop.
+
+- number: 184
+  name: Limited Loop
+  abbr: LLMNT
+  loop:
+    limit: 3 # You can limit the number of items in a loop before restarting it. While this doesn't make much sense for non-shuffled content, it can be useful to grab "one of" a pool of shuffled content, generally as a nested list.
+    content: # You can define the content of the loop using the content property. This is a list of content items that will be played in order.
+    - image: placeholders/sequence/0.jpg
+      duration: 3
+    - image: placeholders/sequence/1.jpg
+      duration: 3
+    - image: placeholders/sequence/2.jpg
+      duration: 3
+    - image: placeholders/sequence/3.jpg
+      duration: 3
+    - image: placeholders/sequence/4.jpg
+      duration: 3
+    - image: placeholders/sequence/5.jpg
+      duration: 3
+
+- number: 190
+  name: Referenced Content
+  abbr: REF
+  ref: ad1 # You can reference content defined in the refs section of the config file. This is useful for reusing content in multiple places. @since 5.1.0
+
+- number: 191
+  name: Loops with References
+  abbr: REF2
+  loop:
+    content:
+    - ref: ad1 # You can also use references in loops.
+      duration: 3
+    - ref: intro
+    - image: placeholders/sequence/0.jpg
+      duration: 3
+    - image: placeholders/sequence/1.jpg
+      duration: 3
+    - image: placeholders/sequence/2.jpg
+      duration: 3
+
+- number: 192
+  name: Layouts with References
+  abbr: REF3
+  h-split:
+    a:
+      ref:
+        name: ad1 # You can also use references in mixes.
+        overrides: # You can override the properties of the referenced content here. IMPORTANT: this only works if the referenced content doesn't use shorthand properties.
+          # So for instance if you use `image: xyz.png` this won't work. You need to use `image: { src: xyz.png }` instead to do the override.
+          aspectRatioBehavior: contain # Consult the properties of the referenced content for what you can override here.
+    b:
+      ref: intro
+
+- number: 193
+  name: References with overrides
+  abbr: REF4
+  ref:
+    name: ad1 # You can also use references in mixes.
+    overrides: # You can override the properties of the referenced content here. IMPORTANT: this only works if the referenced content doesn't use shorthand properties.
+    # So for instance if you use `image: xyz.png` this won't work. You need to use `image: { src: xyz.png }` instead to do the override.
+      aspectRatioBehavior: contain # Consult the properties of the referenced content for what you can override here.
+
+- number: 194
+  name: References with other references
+  abbr: REF5
+  ref: ad2
+
+- number: 210
+  abbr: TWITCH1
+  name: Example Twitch stream
+  twitch: twitchsports # You can embed Twitch streams directly using the Twitch engine. You need to use a "secure context" (HTTPS or localhost) to do this. @since 5.1.0
+
+- number: 211
+  abbr: TWITCH2
+  name: Example Twitch stream 2
+  twitch:
+    channel: twitchplayspokemon # You can also reference a Twitch channel using the channel property instead of the default string.
+
+- number: 220
+  name: Developer IFrame Options Test Application
+  abbr: DEVOPS
+  iframe: # View the documentation of the IFrame API here: http://docs.tvs.gcpw.art/developer/iframe-api/
+    src: https://gcpw.art/tvs/iframe-api-test-application/test.html # View the source code of this test app to understand how it works
+    options: # You can pass options to the iframe using this property. These options will be sent to the iframe using postMessage.
+      slicesOfCake: 3 # Options are up to the iframe to interpret; you can send any data that the iframe understands.
+      flavor: chocolate
+      toppings:
+      - sprinkles
+      - whipped cream
+      specialInstructions:
+        allergies:
+        - peanuts
+        - gluten
+
+- number: 240
+  name: Daily Schedule
+  abbr: SCHED
+  daily-schedule: # The daily schedule engine allows you to define content based on a 24-hour schedule. You can go overnight, but you can't overlap content. The schedule will repeat each day.
+    noSignalContent: # Optional. You can specify content to show when there's nothing else scheduled.
+      color: black
+    
+    content:
+    - startTime: "20:00" # Time to start this item, in 24 hour format. Required.
+      endTime: "05:00" # Time to end this item, in 24 hour format. Required.
+      image: # The content to show. Required.
+        src: placeholders/schedule-night.png
+        pixelated: true
+
+    - startTime: "05:00"
+      endTime: "11:00"
+      image:
+        src: placeholders/schedule-morning.png
+        pixelated: true
+    
+    - startTime: "11:00"
+      endTime: "20:00"
+      image:
+        src: placeholders/schedule-day.png
+        pixelated: true

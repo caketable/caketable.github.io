@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+
+baseDirectory: ../ # <-- to make this example work in the examples browser it's necessary to set the base directory; you won't need to use this in your own projects.
+
+# Weather channels display weather information for a specific location.
+# Currently there is only one provider of weather data implemented, the US National Weather Service.
+# This provider only works in the US, and only in imperial or metric units.
+# If you host the app on a LAN and use HTTP, you need to specify a location manually; geolocation will not work.
+defaultChannel: 44
+noise: 0.15
+
+channels:
+- number: 44
+  name: 44cast
+  abbr: WX
+  backgroundAudio: placeholders/bgm-3.mp3
+  weather: # Weather forecasts can be displayed in a style similar to the WeatherSTAR
+    logo: placeholders/weather.png # Required. Channel logo in the corner
+    provider: usa # Required. This is based on data from the US National Weather Service, and as such only works in the US.
+    units: imperial # Required. The units to use; either imperial or metric
+    # Important: if you host the app on a LAN and use HTTP or use the standalone version, you need to specify a location manually; geolocation will not work.
+    latitude: 32.71742 # Optional. If not specified your location will be requested from the browser
+    longitude: -117.162772 # Optional. If not specified your location will be requested from the browser
+
+- number: 45
+  name: Geolocation Weather
+  abbr: WXG
+  weather:
+    logo: placeholders/weather.png
+    provider: usa # this is based on data from the US National Weather Service, and as such only works in the US.
+    units: imperial # or metric

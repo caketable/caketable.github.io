@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+
+defaultChannel: 3
+
+channels:
+- number: 3
+  name: Welcome
+  abbr: WELCOME
+  youtube-playlist: PLU1WjbywtZxHbh0v_dZ0-b30BAkSCZ5mT

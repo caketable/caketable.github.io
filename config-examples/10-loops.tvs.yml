@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+
+baseDirectory: ../ # <-- to make this example work in the examples browser it's necessary to set the base directory; you won't need to use this in your own projects.
+
+defaultChannel: 4
+
+channels:
+
+- number: 4
+  name: Action Network
+  abbr: ACT
+  loop:
+  - video:
+      provider: youtube
+      src: yXkIHyBfns8
+  - image: placeholders/example-ad.gif
+    duration: 5
+  - video: placeholders/tvs-intro-sd.m4v
+  - video:
+      provider: youtube
+      src: m6iV1CkCnWk
+  - image: placeholders/random-placeholder.jpg
+    duration: 10
+
+- number: 11
+  name: Oak Ridge TV
+  abbr: ORTV
+  image: placeholders/example-program.gif

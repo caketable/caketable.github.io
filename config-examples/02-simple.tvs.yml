@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+
+baseDirectory: ../ # <-- to make this example work in the examples browser it's necessary to set the base directory; you won't need to use this in your own projects.
+
+# Working our way up in complexity, we've got a bit of content here.
+# A noise effect was added to different channels to simulate worse reception on some than others.
+
+defaultChannel: 3
+noise: 0.15
+
+channels:
+
+- number: 1
+  name: On Demand
+  abbr: ON
+  noise: 0.1
+  image: placeholders/channel-1.png
+
+- number: 2
+  name: CommNet News
+  abbr: NEWS
+
+- number: 3
+  name: ZBC North
+  abbr: ZBC
+
+- number: 4
+  name: Action Network
+  abbr: ACT
+  image: placeholders/example-ad.gif
+
+- number: 11
+  name: Oak Ridge TV
+  abbr: ORTV
+  image: placeholders/example-program.gif
+  noise: 0.3

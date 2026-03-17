@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+
+baseDirectory: ../ # <-- to make this example work in the examples browser it's necessary to set the base directory; you won't need to use this in your own projects.
+
+# Videos can be local or remote.
+# You can link to a video file on your server or to specific video hosting services that require embedding:
+# - Vimeo
+# - YouTube
+# - Dailymotion
+# HLS streams are also supported and will be played if the link ends in .m3u8
+defaultChannel: 3
+
+channels:
+
+- number: 1
+  name: On Demand
+  abbr: ON
+
+- number: 2
+  name: CommNet News
+  abbr: NEWS
+
+- number: 3
+  name: Welcome
+  abbr: WELCOME
+  video: placeholders/tvs-intro-sd.m4v
+
+- number: 4
+  name: Blender Network
+  abbr: BLEND
+  video: https://media.vimejs.com/720p.mp4
+
+- number: 11
+  name: Oak Ridge TV
+  abbr: ORTV
+  video: https://youtu.be/0ccKOqz6NtU
+
+- number: 31
+  name: Vimeo Example
+  abbr: VIMEO
+  video: https://vimeo.com/1084537
+
+- number: 32
+  name: YouTube Example
+  abbr: YOUTUBE
+  video: https://www.youtube.com/watch?v=0ccKOqz6NtU
+
+- number: 34
+  name: HLS Example
+  abbr: HLS
+  video: https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8

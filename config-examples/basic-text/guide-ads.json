@@ -1,0 +1,39 @@
+{
+    "defaults": {
+        "background": "black",
+        "color": "white",
+        "fontFamily": "Prevue Grid",
+        "fontSize": "1.5rem"
+    },
+    "pages": [
+        {
+            "lines": [
+                { "text": "HBO" },
+                { "text": "12 months $10.95 / mo." },
+                { "text": "Sign up today!" },
+                { "text": "Call 1-800-555-9485" }
+            ]
+        },
+        {
+            "lines": [
+                { "text": "Showtime Value Package" },
+                { "text": "Showtime, Sundance & Movie Channel" },
+                { "text": "$12.95 / mo." },
+                { "text": "Call 1-800-555-9485" }
+            ]
+        },
+        {
+            "lines": [
+                { "text": "SAVE on Collect Calls!" },
+                { "text": "1-800-CALL-ATT" }
+            ]
+        },
+        {
+            "lines": [
+                { "text": "Greenhill Weather" },
+                { "text": "Most dependable forecast" },
+                { "text": "Ch. 44" }
+            ]
+        }
+    ]
+}

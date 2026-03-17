@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+
+baseDirectory: ../ # <-- to make this example work in the examples browser it's necessary to set the base directory; you won't need to use this in your own projects.
+
+# for display on a regular TV, disable visual effects
+# we already have scanlines on a CRT; don't need to simulate more.
+
+# default value for all channels
+# when setting amounts of noise or blur, use `false` rather than 0 to turn off
+noise: false
+scanlines: false
+blur: false
+shadowMask: false # this is false by default, setting it here for example
+
+# you can specify a repeating pattern a background image around the outside of the screen
+border: placeholders/border.png
+
+# you can specify a bezel image to overlay on top of the screen
+bezel: cylindrical # or flat
+
+# if the page is installed as a PWA or from a browser in kiosk mode with the allow autoplay video flags, you can start the app unmuted
+startUnmuted: true
+
+defaultChannel: 72
+
+channels:
+
+- number: 72
+  name: Test Pattern
+  abbr: TEST
+  generator: test-pattern
+
+- number: 73
+  name: Color Bars
+  abbr: BARS
+  generator: color-bars
+  noise: 0.8
+  noiseBlendMode: multiply
+  blur: 4

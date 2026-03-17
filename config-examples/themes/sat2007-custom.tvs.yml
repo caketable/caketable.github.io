@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+
+osd:
+  theme: sat2007
+  primaryColor: "rebeccapurple"
+  accentColor: "white"
+  themeOptions:
+    showMessageIcon: true
+    showChannelLockIcon: true
+
+noSignalContent: # Optional. You can specify content to show when the TV is off the air.
+  image: /placeholders/no-signal.png # Required. The image to show when the TV is off the air.
+
+defaultChannel: 3
+
+channels:
+
+- number: 1
+  name: On Demand
+  abbr: ON
+
+- number: 2
+  name: CommNet News
+  abbr: NEWS
+
+- number: 3
+  name: ZBC North
+  abbr: ZBC
+
+- number: 4
+  name: Action Network
+  abbr: ACT
+
+- number: 11
+  name: Oak Ridge TV
+  abbr: ORTV

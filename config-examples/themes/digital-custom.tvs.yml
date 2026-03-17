@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+
+osd:
+  theme: digital
+  primaryColor: "#9D75CB"
+  accentColor: "#008F64"
+
+defaultChannel: 3
+
+channels:
+
+- number: 1
+  name: On Demand
+  abbr: ON
+
+- number: 2
+  name: CommNet News
+  abbr: NEWS
+
+- number: 3
+  name: ZBC North
+  abbr: ZBC
+
+- number: 4
+  name: Action Network
+  abbr: ACT
+
+- number: 11
+  name: Oak Ridge TV
+  abbr: ORTV

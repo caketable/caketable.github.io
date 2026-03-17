@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+
+baseDirectory: ../ # <-- to make this example work in the examples browser it's necessary to set the base directory; you won't need to use this in your own projects.
+
+applicationTitle: Kiosk Mode Example
+
+# This is a simple example of a kiosk configuration. Kioks allow you to lock down the TV and disable the ability to change the picture settings, volume, channel, etc.
+# The standalone version of Television Simulator can read these settings and disable menu items, start in full-screen mode, etc.
+# All of these settings are optional and only work to disable features; they default to true (except start in fullscreen). Remove the kiosk section to enable all capabilities.
+
+kiosk:
+  #keyboardControls: false # Disables the user's ability to use the keyboard. (Note: this disables ALL keyboard controls)
+  #touchControls: false # Disables the user's ability to use touch controls. (Note: this disables ALL touch controls)
+
+  pictureControls: false # Disables the user's ability to change the picture settings.
+  volumeControls: false # Disables the user's ability to change the volume.
+  channelControls: false # Disables the user's ability to change the channel.
+  infoControls: false # Disables the user's ability to view the info screen.
+  powerControls: false # Disables the user's ability to turn the TV on or off.
+  #remotePairing: false # Disables the user's ability to pair a remote using the QR code.
+  examples: false # Disables the user's ability to view the examples.
+  setup: false # Disables the user's ability to view the setup screen.
+  help: false # Disables the user's ability to view the help screen.
+  #fullscreen: true # Starts the standalone application in full-screen mode. Default is false.
+  #allowOtherConfigurations: false # In standalone, once a config is loaded with this setting, the user cannot load another config. Important: the only way to disable this is to disable it in the config file.
+  #menuBar: false # Disables the menu bar in standalone mode.
+
+# In case you're using your own server you won't need to worry about conflicts. If you're using the default server, you should change the Peer ID to something unique.
+remote:
+  enabled: false # Disables the remote control feature. Enabled by default.
+  #server: pce.gcpw.us # Defines a custom instance of the PeerJS server to use for remote control. This is optional; the default instance is used if this isn't defined.
+  #port: 9000 # Defines a custom port to use for the PeerJS server. This is optional; the default port (9000) is used if this isn't defined.
+  #path: / # Defines a custom path to use for the PeerJS server. This is optional; the default path (/) is used if this isn't defined.
+  peerId: "423902" # Make this value unique! Any instance of TVS can have the same Peer ID; this isn't enforced anywhere. If you're not using your own LAN-based server change this value.
+
+# Here's a simple channel lineup to have some sample content.
+defaultChannel: 2
+
+channels:
+
+- number: 1
+  name: On Demand
+  abbr: ON
+  image: placeholders/channel-1.png
+  backgroundAudio: placeholders/bgm-3.mp3
+
+- number: 2
+  name: Welcome
+  abbr: HELLO
+  title: Hello
+  image: placeholders/welcome.png
+  backgroundAudio: placeholders/bgm-2.mp3
+
+- number: 3
+  name: Movie Previews
+  abbr: PREV
+  title: Sneak Prevue
+  description: Preview the hottest movies on Pay-Per-View and On Demand!
+  video: placeholderstvs-intro-sd.m4v

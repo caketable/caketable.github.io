@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://gcpw.art/tvs/schemas/5.0.0.json
+
+# This is an example of the absolute minimum configuration required to get TVS up and running.
+# There isn't any content on any of these channels; you only need one channel but we've got a few here as a starting point.
+
+defaultChannel: 3
+
+channels:
+
+- number: 1
+  name: On Demand
+  abbr: ON
+
+- number: 2
+  name: CommNet News
+  abbr: NEWS
+
+- number: 3
+  name: ZBC North
+  abbr: ZBC
+
+- number: 4
+  name: Action Network
+  abbr: ACT
+
+- number: 11
+  name: Oak Ridge TV
+  abbr: ORTV
