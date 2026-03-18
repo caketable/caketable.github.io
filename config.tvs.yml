@@ -24,10 +24,10 @@ bezel: flat # Optional. You can specify a bezel image to go around the outside o
 # warmup: false # Optional. By default the TV will warm up and cool down when you power it on and off. If you want to disable this set to false. If set to a number, it will be the duration of the warmup in seconds.
 
 # Uncomment the lines below to use the digital cable box theme instead of the default on-screen displays
-osd:
-  theme: digital
-  primaryColor: "#1e8a54"
-  accentColor: "#15613b"
+#osd:
+#  theme: digital
+#  primaryColor: "#1e8a54"
+#  accentColor: "#15613b"
 
 # Uncomment the lines below to use the Sat1992 theme inspired by early-90s C-band satellite TV
 # osd:
@@ -47,10 +47,10 @@ osd:
 #       T3: 6900
 
 # Uncomment the lines below to use the Sat2007 theme inspired by mid-2000 satellite TV
-# osd:
-#   theme: sat2007
-#   # primaryColor: "rebeccapurple" # Optional color overrides
-#   # accentColor: "white"
+osd:
+  theme: sat2007
+  primaryColor: "green" # Optional color overrides
+  accentColor: "white"
 #   # aspectRatioBehavior: stretch # Optional. The aspect ratio behavior of the screen. Values are stretch, letterbox, or hybrid. Defaults to hybrid.
 #   themeOptions: # certain themes have additional options that can be set like this:
 #     showMessageIcon: true # Show the message icon in the top bar
@@ -115,6 +115,7 @@ osd:
 #   volumeChange: http://your-server/receive_update?volume={volume} # Optional. This is the URL that will be called when the volume changes. The volume level will be sent as a query parameter.
 #   muteChange: http://your-server/receive_update?isMuting={isMuting} # Optional. This is the URL that will be called when the muting or unmuting. The mute state will be sent as a query parameter.
 
+startUnmuted: true
 
 ##### CHANNELS #####
 # REFERENCE:
@@ -130,11 +131,11 @@ defaultChannel: 1 # Required. The default channel to start on when visiting the 
 
 channels: # starts a list of channels. Every channel below begins with a "-" as that lets YAML know we're defining a list.
 
-- number: 1 # Required. Every channel needs a unique number. Negative numbers indicate line inputs, so -1 will be displayed as "LINE 1". Channel 0 is displayed as the TV's "MENU".
-  name: On Demand # Required. The name of the channel.
-  abbr: ON # Required. An abbreviation for the channel; try to keep it short.
-  image: placeholders/channel-1.png # Channel content. If there's none the TV will play static. There are various content engines available with lots of different configurations. In this case it's an image.
-  backgroundAudio: placeholders/bgm-3.mp3 # Optional. You can add background audio to any channel. This works well with radio streams, but you could use any audio file that the browser supports too.
+- number: 1
+  name: Welcome
+  abbr: WC
+  image: placeholders/channel-1.png 
+  backgroundAudio: placeholders/bgm-3.mp3
 
 - number: 2
   name: test channel
@@ -159,8 +160,8 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
     logo: placeholders/weather.png 
     provider: usa
     units: imperial
-    latitude: -82.8628
-    longitude: 135.0000
+    latitude: 39.30
+    longitude: -84.52
 
 - number: 5
   name: Program Guide
@@ -175,13 +176,18 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
         theme: "1989"
         themeOptions:
           ticker: # Optional. A scrolling text bar at the bottom of the guide. Put a list of messages you want shown here.
-          - "Hypercom cable - connecting you to the future"
+          - "Dr. Jr."
           - "Pay-Per-View Movies - Ch 1 - Straight from Hollywood to your home, anytime!"
 
 - number: 6
+  icon: https://file.garden/aUYIWVAKvQxCBY-_/database/photos/sonic.png
   name: Channel List
   abbr: LIST
-  channel-list: true
+  channel-list: 
+    primaryColor: blue # no one asked
+    textColor: white
+    backgroundImage: https://file.garden/aUYIWVAKvQxCBY-_/database/photos/Aurora.jpg
+    logo: https://file.garden/aUYIWVAKvQxCBY-_/database/photos/the%20flarg.png # 67 67 67
   
 - number: 7
   name: Quant
@@ -202,3 +208,17 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
       endTime: "20:00"
       video:
         src: https://rhine.webchnl.live/memfs/daad2183-472a-4a6f-ac37-a2934dfccac4.m3u8
+
+
+- number: 8
+  name: KATS
+  abbr: KATS
+  iframe:
+   src: https://file.garden/aUYIWVAKvQxCBY-_/scratch/html/katsauto.html
+   allowInteraction: false
+
+- number: 9
+  name: guh
+  abbr: GUH
+  image: https://file.garden/aUYIWVAKvQxCBY-_/database/photos/guweh.png
+  backgroundAudio: placeholders/bgm-3.mp3
