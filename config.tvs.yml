@@ -124,8 +124,8 @@ startUnmuted: true
 # The rest of this file is about defining a channel lineup.
 ####################
 
-# noSignalContent: # Optional. You can specify content to show when a channel is off the air.
-#   image: placeholders/no-signal.png
+noSignalContent: # Optional. You can specify content to show when a channel is off the air.
+  image: placeholders/no-signal.png
 
 defaultChannel: 1 # Required. The default channel to start on when visiting the page.
 
@@ -222,3 +222,17 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
   abbr: GUH
   image: https://file.garden/aUYIWVAKvQxCBY-_/database/photos/guweh.png
   backgroundAudio: placeholders/bgm-3.mp3
+
+- number: 10
+  title: TELEAPPLE
+  name: TELEAPPLE
+  abbr: OWOT1
+  iframe:
+    src: https://ourworldoftext.com/telapple
+
+- number: 11
+  title: Our World Of Text
+  name: Our World Of Text
+  abbr: OWOT2
+  iframe:
+    src: https://ourworldoftext.com
