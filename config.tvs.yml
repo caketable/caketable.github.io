@@ -125,8 +125,9 @@ startUnmuted: true
 ####################
 
 noSignalContent: # Optional. You can specify content to show when a channel is off the air.
-  # image: https://caketable.github.io/stuff/no-signal.png # only use as placeholder
-  bouncing-logo: https://caketable.github.io/stuff/logo-print.png #
+  image: https://caketable.github.io/stuff/no-signal.png # 
+  #bouncing-logo: https://caketable.github.io/stuff/logo-print.png #  only use as placeholder
+  backgroundAudio: http://radio.plaza.one/mp3
 
 defaultChannel: 1 # Required. The default channel to start on when visiting the page.
 
@@ -135,8 +136,12 @@ channels:
 - number: 1
   name: Welcome
   abbr: WC
-  image: placeholders/channel-1.png 
-  backgroundAudio: placeholders/bgm-3.mp3
+  video: https://file.garden/aUYIWVAKvQxCBY-_/database/videos/welcomeloop-caketable.mp4 
+  backgroundAudio: http://radio.plaza.one/mp3
+  backgroundAudioOptions:
+    description: Nightwave Plaza Radio 
+    nowPlayingUrl: https://api.plaza.one/status
+    nowPlayingProvider: plaza-one
 
 - number: 2
   name: test channel
@@ -200,6 +205,9 @@ channels:
           - "nexus s pla"
           - "gay"
           - "we need a hero"
+          - "KINDLE FRIED DRS."
+          - "mother fucking clocks"
+          - "i sneezed"
 
 - number: 6
   icon: https://file.garden/aUYIWVAKvQxCBY-_/database/photos/sonic.png
@@ -259,3 +267,7 @@ channels:
   iframe:
     src: https://ourworldoftext.com
 
+- number: 12
+  name: Upcoming Channel
+  abbr: UNK
+  title: To Be Announced
