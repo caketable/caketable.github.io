@@ -14,11 +14,11 @@
 applicationTitle: cake table :3 # Optional. The title of the webpage; make it your own!
 scanlines: true # Optional. Scanlines are enabled by default but if you don't want them you can set this to false. On a real CRT it's best to disable these and shadow masks.
 shadowMask: aperture-grille # Optional. The default shadow mask to simulate a CRT screen. Values are slot-mask, dot-mask, or aperture-grille. To disable, set to false.
-noise: 0.15 # Optional. Default amount of picture noise to apply
+noise: 0.01 # Optional. Default amount of picture noise to apply
 blur: 1 # Optional. Default amount of blur to apply to the picture; set to false to disable
 bezel: flat # Optional. You can specify a bezel image to go around the outside of the screen. Values are none, cylindrical or flat.
-# animateChannelChange: false # Optional. By default the TV will shake the screen a bit when changing channels. If you want to disable this set to false.
-# changeChannelNoise: false # Optional. By default the TV will add noise to the picture when changing channels. If you want to disable this set to false.
+animateChannelChange: false # Optional. By default the TV will shake the screen a bit when changing channels. If you want to disable this set to false.
+changeChannelNoise: false # Optional. By default the TV will add noise to the picture when changing channels. If you want to disable this set to false.
 # autoScale: false # Optional. By default the TV will scale to fit the window. If you want to disable this set to false.
 # border: placeholders/border.png # Optional. You can specify a repeating pattern a background image around the outside of the screen
 # warmup: false # Optional. By default the TV will warm up and cool down when you power it on and off. If you want to disable this set to false. If set to a number, it will be the duration of the warmup in seconds.
@@ -125,7 +125,8 @@ startUnmuted: true
 ####################
 
 noSignalContent: # Optional. You can specify content to show when a channel is off the air.
-  image: placeholders/no-signal.png
+  # image: https://caketable.github.io/stuff/no-signal.png # only use as placeholder
+  bouncing-logo: https://caketable.github.io/stuff/logo-print.png #
 
 defaultChannel: 1 # Required. The default channel to start on when visiting the page.
 
@@ -157,7 +158,7 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
   icon: placeholders/weather.png #
   backgroundAudio: placeholders/bgm-3.mp3
   weather: 
-    logo: placeholders/weather.png 
+    logo: https://caketable.github.io/stuff/logo-white.png
     provider: usa
     units: imperial
     latitude: 39.30
@@ -167,17 +168,26 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
   name: Program Guide
   abbr: GUIDE
   title: Prevue Guide
+  icon: https://file.garden/aUYIWVAKvQxCBY-_/database/photos/ralsei%20smoking%20a%20fat%20blunt.png  # smoking dat blunt drs.
   noise: 0.1
   v-split:
     a:
-      video: https://rhine.webchnl.live/memfs/daad2183-472a-4a6f-ac37-a2934dfccac4.m3u8
+      iframe: https://ourworldoftext.com/
     b:
       guide:
         theme: "1989"
         themeOptions:
           ticker: # Optional. A scrolling text bar at the bottom of the guide. Put a list of messages you want shown here.
           - "Dr. Jr."
-          - "Pay-Per-View Movies - Ch 1 - Straight from Hollywood to your home, anytime!"
+          - "only fucking pickles"
+          - "?????????????DAMN IS PICKLES CKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCKCK DRS."
+          - "discord.gg/aisponge"
+          - "is there directv in albuquerque"
+          - "theres a monkey in my bathroom"
+          - "coca cola. coca cola. dont forget the ice. and im not making money off the monkey for bitch! so ima sell clocks bitch! mothafuckin clocks, look at this ancient ass clock here, this mothafuckin clock here is nice. you need to goddamn tell the time and everything. god mothafuckin... DAMN!! WHAT HAPPEN TO MY MOTHAFUCKIN CLOCK BITCH?! IMMA BE BROKE!! WHYY?! HELP!! GODMOTHAFUCKINDAMNNN"
+          - "STOP POSTING ABOUT HOMESTUCK, I'M TIRED OF SEEING IT! My friends on Reddit send me memes, on Discord it's fucking memes, i was in a server, right? and ALL of the channels are just Homestuck stuff. I-I showed my Caliborn underwear to my girlfriend, and the logo i flipped it and i said 'Hey babe, when the underwear is Caliporn HAHA ding ding ding ding ding ding ding *takes breath* ding ding ding' I FUCKING LOOKED AT A BUCKET, I SAID 'THAT'S A BIT NSFW', I LOOKED AT MY HOUSE, I THINK OF JOHN EGBERT, AND I GO 'HOMESTUCK, more like homoSUCK' *takes breath* AAAAAAAAAAAAAAA"
+          - "s that the 67 mango mason mustard phonk with the gassy bowser bouncing kendrick telling jayden to explain his adrien's slowed+reverb friend group until his bus drops him off at the barbder shop haircut that costs a quarter until brazilian sleeping phonk starts sending you to ohio's resturant karma, where theres no menu and you just get the Nexus S for the nintendo switchbox 36One Series XS MAX 4G 3G from Verizprint with your boii tuff redditor scary face scares them away while you scream city boii until camman18 gets turned into the golden dandilion funk up my apple ipad until epstein catches kirk's bullet because we are charlie kirk's nephew's good answer as our son starts paying the rent with his kai cenat stream donation allowance and trying to get a corn on the cob until I start popping a zin with joe bart and send him back to gooning school with the angry beavers"
+          - "NO MORE IPAD KIDS"
 
 - number: 6
   icon: https://file.garden/aUYIWVAKvQxCBY-_/database/photos/sonic.png
@@ -194,7 +204,7 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
   abbr: QNT
   daily-schedule: 
     content:
-    - startTime: "20:00"
+    - startTime: "18:00"
       endTime: "05:00"
       video: 
         src: https://file.garden/aUYIWVAKvQxCBY-_/database/videos/quantoffline.mp4
@@ -205,7 +215,7 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
         src: https://rhine.webchnl.live/memfs/daad2183-472a-4a6f-ac37-a2934dfccac4.m3u8
     
     - startTime: "11:00"
-      endTime: "20:00"
+      endTime: "18:00"
       video:
         src: https://rhine.webchnl.live/memfs/daad2183-472a-4a6f-ac37-a2934dfccac4.m3u8
 
