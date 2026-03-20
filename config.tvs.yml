@@ -130,7 +130,7 @@ noSignalContent: # Optional. You can specify content to show when a channel is o
 
 defaultChannel: 1 # Required. The default channel to start on when visiting the page.
 
-channels: # starts a list of channels. Every channel below begins with a "-" as that lets YAML know we're defining a list.
+channels:
 
 - number: 1
   name: Welcome
@@ -140,10 +140,10 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
 
 - number: 2
   name: test channel
-  abbr: TEST
-  youtube-playlist:
-    src: UUHKj3ZT5E7wvPKRXhFAWhCQ
-    shuffle: true 
+  abbr: TEST # temporary maintenance
+#  youtube-playlist:
+#    src: UUHKj3ZT5E7wxPKRXhFAWhCQ
+#    shuffle: true 
 
 - number: 3
   name: Local News
@@ -156,7 +156,12 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
   title: "Weather around the clock"
   description: "Stay up to date with the latest weather information. Know before you go!"
   icon: placeholders/weather.png #
-  backgroundAudio: placeholders/bgm-3.mp3
+#  backgroundAudio: placeholders/bgm-3.mp3
+  backgroundAudio: http://radio.plaza.one/mp3
+  backgroundAudioOptions:
+    description: Nightwave Plaza Radio 
+    nowPlayingUrl: https://api.plaza.one/status
+    nowPlayingProvider: plaza-one
   weather: 
     logo: https://caketable.github.io/stuff/logo-white.png
     provider: usa
@@ -170,6 +175,11 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
   title: Prevue Guide
   icon: https://file.garden/aUYIWVAKvQxCBY-_/database/photos/ralsei%20smoking%20a%20fat%20blunt.png  # smoking dat blunt drs.
   noise: 0.1
+  backgroundAudio: http://radio.plaza.one/mp3
+  backgroundAudioOptions:
+    description: Nightwave Plaza Radio 
+    nowPlayingUrl: https://api.plaza.one/status
+    nowPlayingProvider: plaza-one
   v-split:
     a:
       iframe: https://ourworldoftext.com/
@@ -184,10 +194,12 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
           - "discord.gg/aisponge"
           - "is there directv in albuquerque"
           - "theres a monkey in my bathroom"
-          - "coca cola. coca cola. dont forget the ice. and im not making money off the monkey for bitch! so ima sell clocks bitch! mothafuckin clocks, look at this ancient ass clock here, this mothafuckin clock here is nice. you need to goddamn tell the time and everything. god mothafuckin... DAMN!! WHAT HAPPEN TO MY MOTHAFUCKIN CLOCK BITCH?! IMMA BE BROKE!! WHYY?! HELP!! GODMOTHAFUCKINDAMNNN"
-          - "STOP POSTING ABOUT HOMESTUCK, I'M TIRED OF SEEING IT! My friends on Reddit send me memes, on Discord it's fucking memes, i was in a server, right? and ALL of the channels are just Homestuck stuff. I-I showed my Caliborn underwear to my girlfriend, and the logo i flipped it and i said 'Hey babe, when the underwear is Caliporn HAHA ding ding ding ding ding ding ding *takes breath* ding ding ding' I FUCKING LOOKED AT A BUCKET, I SAID 'THAT'S A BIT NSFW', I LOOKED AT MY HOUSE, I THINK OF JOHN EGBERT, AND I GO 'HOMESTUCK, more like homoSUCK' *takes breath* AAAAAAAAAAAAAAA"
-          - "s that the 67 mango mason mustard phonk with the gassy bowser bouncing kendrick telling jayden to explain his adrien's slowed+reverb friend group until his bus drops him off at the barbder shop haircut that costs a quarter until brazilian sleeping phonk starts sending you to ohio's resturant karma, where theres no menu and you just get the Nexus S for the nintendo switchbox 36One Series XS MAX 4G 3G from Verizprint with your boii tuff redditor scary face scares them away while you scream city boii until camman18 gets turned into the golden dandilion funk up my apple ipad until epstein catches kirk's bullet because we are charlie kirk's nephew's good answer as our son starts paying the rent with his kai cenat stream donation allowance and trying to get a corn on the cob until I start popping a zin with joe bart and send him back to gooning school with the angry beavers"
+          - "is that the 67 mango mason mustard phonk with the gassy bowser bouncing kendrick telling jayden to explain his adrien's slowed+reverb friend group until his bus drops him off at the barbder shop haircut that costs a quarter until brazilian sleeping phonk starts sending you to ohio's resturant karma, where theres no menu and you just get the Nexus S for the nintendo switchbox 36One Series XS MAX 4G 3G from Verizprint with your boii tuff redditor scary face scares them away while you scream city boii until camman18 gets turned into the golden dandilion funk up my apple ipad until epstein catches kirk's bullet because we are charlie kirk's nephew's good answer as our son starts paying the rent with his kai cenat stream donation allowance and trying to get a corn on the cob until I start popping a zin with joe bart and send him back to gooning school with the angry beavers"
           - "NO MORE IPAD KIDS"
+          - "six seven hahaha very funny pla"
+          - "nexus s pla"
+          - "gay"
+          - "we need a hero"
 
 - number: 6
   icon: https://file.garden/aUYIWVAKvQxCBY-_/database/photos/sonic.png
@@ -246,3 +258,4 @@ channels: # starts a list of channels. Every channel below begins with a "-" as 
   abbr: OWOT2
   iframe:
     src: https://ourworldoftext.com
+
