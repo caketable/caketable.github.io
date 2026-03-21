@@ -271,3 +271,14 @@ channels:
   name: Upcoming Channel
   abbr: UNK
   title: To Be Announced
+
+- number: 13
+  name: CakeTable Commits
+  abbr: GIT
+  feed-reader: https://corsproxy.io/?url=https://github.com/caketable/caketable.github.io/commits/main.atom
+
+- number: 13
+  name: Google Commits
+  abbr: GIT
+  feed-reader: https://corsproxy.io/?url=https://github.com/caketable/caketable.github.io/commits/main.atom
+
