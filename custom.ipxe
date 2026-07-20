@@ -1,0 +1,26 @@
+#!ipxe
+
+:boot
+imgfree
+console --picture http://caketable.github.io/cooldown.png
+
+menu CakeTable Boot Menu - (${ip})
+item wpe Hiren's Boot CD (2019)
+choose target || goto normalerror
+goto ${target}
+
+:wpe
+imgfree
+console --picture http://caketable.github.io/360px-Xbox_360-Guide-NXE.png
+kernel http://boot.netboot.xyz/wimboot
+initrd -n BCD https://ia600502.us.archive.org/view_archive.php?archive=/1/items/hirens-boot-cd-2019/Hiren%27s%20BootCD%202019.iso/boot/BCD BCD
+initrd -n boot.sdi https://ia600502.us.archive.org/view_archive.php?archive=/1/items/hirens-boot-cd-2019/Hiren%27s%20BootCD%202019.iso/boot/boot.sdi boot.sdi
+initrd -n boot.wim https://ia600502.us.archive.org/view_archive.php?archive=/1/items/hirens-boot-cd-2019/Hiren%27s%20BootCD%202019.iso/sources/boot.wim boot.wim
+initrd -n boot.wim https://ia600502.us.archive.org/view_archive.php?archive=/1/items/hirens-boot-cd-2019/Hiren%27s%20BootCD%202019.iso/sources/boot.wim boot.wim
+boot
+
+:normalerror
+menu Error
+item boot Something Went Wrong, make sure your ethernet is connected. Click Here to go back.
+choose target
+goto boot
