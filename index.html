@@ -1,0 +1,28 @@
+---
+layout: none
+---
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<title>Index of /</title>
+</head>
+<body>
+<h1>Index of /</h1>
+<ul>
+{% for repo in site.repos %}
+  <li><a href="{{ repo | relative_url }}">{{ repo }}</a></li>
+{% endfor %}
+{% for file in site.static_files %}
+{% assign skip = false %}
+{% for ex in site.fileexclude %}
+{% if file.path contains ex %}
+{% assign skip = true %}
+{% endif %}
+{% endfor %}
+{% unless skip %}
+<li><a href="{{ file.path | remove_first: '/' }}">{{ file.path | remove_first: '/' }}</a></li>
+{% endunless %}
+{% endfor %}
+</ul>
+</body>
+</html>
