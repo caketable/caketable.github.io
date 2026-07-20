@@ -1,0 +1,194 @@
+noise: 0.15
+shadowMask: aperture-grille
+bezel: flat
+
+externalSources:
+  gcpw:
+    url: https://tvs-studio.gcpw.art/headend
+    key: TVS_64TEJCN-8E96B37-F216MQ-TB75W0RZA4TT0CW2T80V2MBF7MNMZ1MBNZFW1B89KMASX5GZCBDADQDP5G_E9AF6D9C
+
+defaultChannel: 12
+
+channels:
+
+- number: 1
+  name: On Demand
+  abbr: ON
+  image: /placeholders/channel-1.png
+
+- number: 2
+  name: Welcome
+  abbr: HELLO
+  title: Public Beta Testing # Optional. Title to show in the channel guides, including program guide channels and in the digital cable theme's on-screen guide.
+  description: Thanks for testing Television Simulator '99, Public Beta! # Optional. Description to show in the guide.
+  # image: /placeholders/welcome.png
+  character-generator: /content/hello.json
+  backgroundAudio: /placeholders/bgm-2.mp3
+
+- number: 3
+  name: You're watching Television Simulator
+  abbr: TVS
+  video: placeholders/tvs-loop.mp4
+  backgroundAudio: /content/bgm-4.mp3
+
+- number: 4
+  name: TVS Update News
+  abbr: NEWS
+  feed-reader:
+    src: https://docs.tvs.gcpw.art/tvs-changelog.xml
+    title: TVS Update News
+    refreshInterval: 300
+    scrollSpeed: 35
+    scrollDelay: 6
+
+- number: 12 # As mentioned previously you can declare channels in any order; they'll be arranged when you begin.
+  name: Program Guide
+  abbr: GUIDE
+  title: Prevue Guide
+  noise: 0.1
+  # backgroundAudio: http://radio.plaza.one/mp3
+  backgroundAudio: https://radio.plaza.one/aac_hifi.m3u8
+  backgroundAudioOptions:
+    description: Nightwave Plaza Radio # Optional. Credits will appear in the Info OSD
+    # nowPlayingUrl: https://api.plaza.one/status # Optional. If the radio service you're using has a song history API you can link to it here.
+    # nowPlayingProvider: plaza-one # Required if using nowPlayingUrl. Only a few providers are supported right now; see the documentation for more info.
+  v-split: # Program guides are traditionally split in half; the top half is advertising and the lower half is the guide data. We use the v-split layout which defines two components, A and B.
+    a: # A is the top part. See: https://greenhillplaza.notion.site/Layouts-728ab1198d4049de8f4b9a4ff6b31efe?pvs=4
+      loop:
+      - slideshow: # Image slideshow; at the end of it we'll advance to the next component in the loop.
+          duration: 10 # Number of seconds per slide
+          images:
+            - /placeholders/tips-02.png
+            - /placeholders/guide-ad-2.png
+            - /placeholders/tips-01.png
+      - character-generator: /config-examples/bulletins/guide-ad-1.json
+      - character-generator: /config-examples/bulletins/guide-ad-2.json
+      - character-generator: /config-examples/bulletins/guide-ad-3.json
+      - slideshow:
+          duration: 10
+          images:
+            - /placeholders/guide-ad-3.png
+            - /placeholders/tips-03.png
+            - /placeholders/guide-ad.png
+    b: # B is the bottom part
+      guide: # Program guides read the current channel lineup to reconstruct listings based off channel numbers, title and description. https://greenhillplaza.notion.site/Program-Guides-46e80919a3754efa9769f74dd00946fe?pvs=4
+        logo: /placeholders/guide-header.png # Logo to show at the top of the guide
+        alerts: # "Alerts" that show up at certain positions in the guide.
+          - position: 12 # The channel to show the alert after. Doesn't need to be a real channel.
+            text: |
+              Severe Thunderstorm Warning issued for Greenhill County until 6:00 PM
+          - position: 100
+            text: | # You can define text over multiple lines but it'll be compressed to a single line.
+              The following county services are unavailable:
+              Greenhill County Sheriff's Office
+              Greenhill County Fire Department
+              Greenhill County Emergency Services
+
+- number: 14
+  externalSrc: gcpw:INFO
+  info: gcpw:INFO
+  # name: TVS Demo
+  # video: https://www.youtube.com/watch?v=sLjD3Xyk-GI
+
+- number: 15
+  name: HackGreenville Presentation
+  video: https://www.youtube.com/watch?v=wfiDn5Ff2i4
+
+- number: 16
+  name: Program Guide 1989
+  abbr: EPG
+  title: Electronic Program Guide
+  noise: 0.1
+  backgroundAudio: https://radio.plaza.one/aac_hifi.m3u8
+  backgroundAudioOptions:
+    description: Nightwave Plaza Radio # Optional. Credits will appear in the Info OSD
+    # nowPlayingUrl: https://api.plaza.one/status # Optional. If the radio service you're using has a song history API you can link to it here.
+    # nowPlayingProvider: plaza-one # Required if using nowPlayingUrl. Only a few providers are supported right now; see the documentation for more info.
+  guide:
+    theme: 1989
+    themeOptions:
+      title: Greenhill Cable TV Guide
+      ticker: # Another theme option is the ticker; this is a scrolling text bar at the bottom of the guide. Put a list of messages you want shown here.
+      - "Hypercom cable - connecting you to the future"
+      - "Pay-Per-View Movies - Ch 1 - Straight from Hollywood to your home, anytime!"
+      - "Sponsored by Oak Ridge - Visit our new factory outlet store"
+      - "Sponsored by Greenhill Plaza Grand Hotel - New casino members get $15 in free play - Join today and play for free!"
+
+- number: 17
+  name: Youtube Playlist Shuffled
+  abbr: YTSFL
+  youtube-playlist:
+    src: PLU1WjbywtZxEGdTPm-qB0KzPGkRPw6npl
+    shuffle: true
+
+- number: 18
+  name: Oak Ridge TV
+  abbr: ORTV
+  externalSrc: gcpw:CLIPS
+  info: gcpw:CLIPS
+  # video: https://ch3.tvs.gcpw.art/stream_480p.m3u8
+
+- number: 44
+  name: 44cast
+  abbr: WX
+  weather: # Weather forecasts can be displayed in a style similar to the WeatherSTAR
+    logo: /placeholders/weather.png # Required. Channel logo in the corner
+    provider: wttr.in # Required. This is based on data from the US National Weather Service, and as such only works in the US.
+    units: imperial # Required. The units to use; either imperial or metric
+
+- number: 59
+  name: Greenhill Public Access
+  abbr: PUBACC
+  externalSrc: gcpw:GPA
+  info: gcpw:GPA
+  # video: https://ch2.tvs.gcpw.art/stream_480p.m3u8
+
+- number: 72
+  name: Test Pattern
+  abbr: TEST
+  generator: test-pattern # The generator engine allows you to display various generated graphics such as test patterns, color bars and grids
+
+- number: 73
+  name: Color Bars
+  abbr: BARS
+  generator: color-bars # Color bars striped across the screen
+
+- number: 74
+  name: Grid
+  abbr: Grid
+  generator: grid # Calibration grid
+
+- number: 100
+  abbr: YT
+  name: YT?
+  iframe: # You can load up external websites using the IFrame engine
+    src: https://gcpw.art/exhibits/aim/ # Required. The URL to load
+
+- number: 110
+  name: Routine
+  abbr: ROUTINE
+  daily-schedule:
+    content:
+    - startTime: "20:00"
+      endTime: "05:00"
+      image:
+        src: placeholders/schedule-night.png
+        pixelated: true
+
+    - startTime: "05:00"
+      endTime: "11:00"
+      image:
+        src: placeholders/schedule-morning.png
+        pixelated: true
+    
+    - startTime: "11:00"
+      endTime: "20:00"
+      image:
+        src: placeholders/schedule-day.png
+        pixelated: true
+
+- number: 115
+  name: Abstract Background Demo
+  abbr: BG
+  abstract-background:
+    type: wave1
